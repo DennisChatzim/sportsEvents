@@ -14,7 +14,7 @@ struct MainTabView: View {
     @ObservedObject var themeService = ThemeService.shared
     
     @State var tabViewSelection = 0
-    @State private var selectedTab: Tab = .sportsSwiftUI
+    @State private var selectedTab: Tab = .sportsUIKit
     @StateObject var sportsModel = SportsViewModel(dataManager: DataManager.shared, networkManager: NetworkManager.shared)
     
     var body: some View {
@@ -27,10 +27,10 @@ struct MainTabView: View {
                     .edgesIgnoringSafeArea(.all)
                     .preferredColorScheme(themeService.selectedTheme.colorScheme)
                 
+                uiKitWrapperController
+                
                 swiftUINavigationView
 
-                uiKitWrapperController
-                             
                 VStack {
                     
                     Spacer()
@@ -46,18 +46,6 @@ struct MainTabView: View {
         
     }
     
-    @ViewBuilder
-    var sportsViewSwiftUI: SportsView {
-        SportsView(themeService: themeService, model: sportsModel)
-    }
-    
-    @ViewBuilder
-    var sportsViewUIKit: CustomNavigationControllerWrapper {
-        
-        CustomNavigationControllerWrapper()
-    }
-    
-    
     var customTabBar: CustomTabBar {
         return CustomTabBar(selectedTab: $selectedTab) { newTab in
             
@@ -66,6 +54,15 @@ struct MainTabView: View {
             navRouter.navigateBack()
 
         }
+    }
+    
+    var sportsViewSwiftUI: SportsView {
+        SportsView(themeService: themeService, model: sportsModel)
+    }
+    
+    var sportsViewUIKit: CustomNavigationControllerWrapper {
+        
+        CustomNavigationControllerWrapper()
     }
     
     var swiftUINavigationView: some View {
@@ -82,7 +79,7 @@ struct MainTabView: View {
 
         }
         .opacity(selectedTab == .sportsSwiftUI ? 1.0 : 0.0)
-        .offset(x: selectedTab == .sportsSwiftUI ? 0.0 : -1.0 * UIScreen.main.bounds.width)
+        .offset(x: selectedTab == .sportsSwiftUI ? 0.0 : 1.0 * UIScreen.main.bounds.width)
         .environment(\.router, navRouter)
 
     }
@@ -97,7 +94,7 @@ struct MainTabView: View {
             
         }
         .opacity(selectedTab == .sportsUIKit ? 1.0 : 0.0)
-        .offset(x: selectedTab == .sportsUIKit ? 0.0 : 1.0 * UIScreen.main.bounds.width)
+        .offset(x: selectedTab == .sportsUIKit ? 0.0 : -1.0 * UIScreen.main.bounds.width)
     }
     
     @ToolbarContentBuilder

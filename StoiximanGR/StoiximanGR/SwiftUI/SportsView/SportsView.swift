@@ -173,11 +173,11 @@ struct SportsView: View {
 
                     LoaderViewForDragToRefresh()
                         .padding(.top, 10)
-                        .offset(x: 0, y: model.isLoading ? UIScreen.main.bounds.height / 2.0 : (position * 1.4 / maxDraggingToRefreshHeight) * 15)
+                        .offset(x: 0, y: model.isLoading ? UIScreen.main.bounds.height / 2.2 : (position * 1.4 / maxDraggingToRefreshHeight) * 15)
                         .opacity(min(1, position > 10.0 ? abs(position * 1.4 / maxDraggingToRefreshHeight) : 0.0))
                         .scaleEffect(x: model.isLoading ? 1 : min(1, abs(position / maxDraggingToRefreshHeight)) + 0.2,
                                      y: model.isLoading ? 1 : min(1, abs(position / maxDraggingToRefreshHeight)) + 0.2)
-                        .animation(Animation.easeOut(duration: 0.5), value: position) //model.isLoading && position >= 0)
+                        .animation(Animation.easeOut(duration: 0.6), value: position) //model.isLoading && position >= 0)
 
                     Spacer().frame(width: 30)
                     

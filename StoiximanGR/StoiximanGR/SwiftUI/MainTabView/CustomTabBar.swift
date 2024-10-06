@@ -13,8 +13,8 @@ enum Tab : String, CaseIterable {
     
     func rawValueIndex() -> Int {
         switch self {
-        case .sportsSwiftUI: return 0
-        case .sportsUIKit: return 1
+        case .sportsSwiftUI: return 1
+        case .sportsUIKit: return 0
         }
     }
     
@@ -76,16 +76,16 @@ struct CustomTabBar: View {
         
         HStack {
             Spacer()
-            tabBarItem(tab: Tab.sportsSwiftUI,
-                       selectedTab: selectedTab,
-                       action: {
-                tabItemTapped(newTab: Tab.sportsSwiftUI)
-            })
-            Spacer()
             tabBarItem(tab: Tab.sportsUIKit,
                        selectedTab: selectedTab,
                        action: {
                 tabItemTapped(newTab: Tab.sportsUIKit)
+            })
+            Spacer()
+            tabBarItem(tab: Tab.sportsSwiftUI,
+                       selectedTab: selectedTab,
+                       action: {
+                tabItemTapped(newTab: Tab.sportsSwiftUI)
             })
             Spacer()
         }
