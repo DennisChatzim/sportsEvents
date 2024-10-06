@@ -1,8 +1,14 @@
-# sportsEvents
-This project was implemented as an assignment of an online sports gambling company
 
+//
+//  StoiximanApp.swift
+//  Stoiximan
+//
+//  Created by Dionisis Chatzimarkakis on 4/10/24.
+//
 
+import SwiftUI
 
+/*
 
 Initial Requirements :
 ● The application is required to retrieve the list of events from an API endpoint. Further details regarding the API can be found in the API section provided below.
@@ -56,8 +62,27 @@ or UICollectionView).
  4. Please try to notice that no matter from which screen (SwiftUI or UIKit) you change the favourite settings the data are always updated smoothly and with consistency in both scenarios: Drag to refresh and also add/remove favourite
  
  5. This project can run only on iOS >= 17.0 because of some swiftUI functions
-
  
-It combines SwiftUI, Combine, MVVM, custom Loaders, custom modifiers, custom tab bar, localization, unit tests and UIKit approach for same functionality and several nice features !
-MVVM with reactive parts for minimal, stable and smooth UX performance !
+ */
 
+
+@main
+struct StoiximanApp: App {
+    
+    @ObservedObject var themeService = ThemeService.shared
+    
+    var body: some Scene {
+        WindowGroup {
+            ZStack {
+                mainView
+            }
+            .edgesIgnoringSafeArea(.all)
+        }
+    }
+    
+    @ViewBuilder var mainView: some View {
+
+        MainTabView()
+
+    }
+}

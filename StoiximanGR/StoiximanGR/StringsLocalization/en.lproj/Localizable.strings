@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  Stoiximan
+
+  Created by Dionisis Chatzimarkakis on 4/10/24.
+  
+*/
+
+// Network error handling:
+"errorNetworkAlertTitle" = "Something went wrong";
+"urlIsInvalid" = "The URL is invalid.";
+"networkRequestfailedGeneral" =  "Network request failed.";
+"notConnectedMessage" = "It seems you have some connection issues.\nPlease check your internet connection and try again.";
+"serverResponseNotValid" = "The server response is invalid.";
+"decodingErrorMessage" = "Failed to decode the response.";
+"serverStatusCodeError" = "Server status code was not valid: ";
+"loadingText" = "Loading ..";

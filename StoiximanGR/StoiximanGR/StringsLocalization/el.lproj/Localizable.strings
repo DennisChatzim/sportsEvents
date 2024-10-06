@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  Stoiximan
+
+  Created by Dionisis Chatzimarkakis on 4/10/24.
+  
+*/
+
+// Network error handling:
+"errorNetworkAlertTitle" = "Κάτι πήγε στραβά";
+"urlIsInvalid" = "Η διεύθυνση URL δεν είναι έγκυρη.";
+"networkRequestfailedGeneral" = "Η αίτηση δικτύου απέτυχε.";
+"notConnectedMessage" = "Φαίνεται πως αντιμετωπίζετε προβλήματα σύνδεσης.\nΠαρακαλώ ελέγξτε τη σύνδεση στο διαδίκτυο και δοκιμάστε ξανά.";
+"serverResponseNotValid" = "Η απάντηση του διακομιστή δεν είναι έγκυρη.";
+"noDataReceived" = "Δεν ελήφθησαν δεδομένα απο τον σερβερ !";
+"decodingErrorMessage" = "Αποτυχία αποκωδικοποίησης της απάντησης.";
+"serverStatusCodeError" = "Ο κωδικός κατάστασης του διακομιστή δεν ήταν έγκυρος: ";
+"loadingText" = "Παρακαλώ περιμένετε ..";
