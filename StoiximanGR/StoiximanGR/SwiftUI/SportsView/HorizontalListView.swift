@@ -74,6 +74,8 @@ struct HorizontalListView: View {
         .animation(Animation.linear(duration: 0.3), value: model.events)
     }
     
+    // I tried splitting the event view to separate class but then I noticed that the animation of moving an event when set as Favourite looked like buggy so
+    // I believe it is better to keep them here in the same parent SwiftUI class
     func createNewEventCellView(sportsEvent: SportsEvent) -> some View {
         
         VStack(alignment: .center) {
