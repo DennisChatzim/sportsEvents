@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 import Combine
 
-class EventCell: UICollectionViewCell {
+class EventCellUIKit: UICollectionViewCell {
     
     static let identifier = "EventCell"
 

@@ -41,7 +41,10 @@ class TimerManager: ObservableObject {
     private func setupTimerObserver() {
         
         $isUIKitTimerEnabled
-            .receive(on: DispatchQueue.main)
+            // .receive(on: DispatchQueue.main) // This is not needed: Lets avoid observing in mainn thread whenever possible. We have only 2 subscriber of date objects:
+            // UIKit observes it using "sink" in main thread inside "EventCellUIKit"
+            // SwiftUI observes date through the SwiftUI mechanism for "ObservedObjects" which iccurs always in mainthready anyway
+            // So no need to observe here in main thread ;)
             .sink(receiveValue: { [weak self] isUIKitTimerEnabled in
                 guard let instance = self else { return }
                 

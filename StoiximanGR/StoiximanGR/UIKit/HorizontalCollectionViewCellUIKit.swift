@@ -42,7 +42,7 @@ class HorizontalCollectionViewCell: UICollectionViewCell {
             innerCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
-        innerCollectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.identifier)
+        innerCollectionView.register(EventCellUIKit.self, forCellWithReuseIdentifier: EventCellUIKit.identifier)
     }
     
     required init?(coder: NSCoder) {
@@ -87,7 +87,7 @@ extension HorizontalCollectionViewCell: UICollectionViewDataSource, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCell.identifier, for: indexPath) as! EventCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCellUIKit.identifier, for: indexPath) as! EventCellUIKit
         let event = events[indexPath.item]
         cell.configure(with: event,
                        dataManager: dataManager,
