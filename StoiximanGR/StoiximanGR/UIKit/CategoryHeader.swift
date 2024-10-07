@@ -70,7 +70,7 @@ class CategoryHeader: UICollectionReusableView {
         }
         
         categoryImageView.image = UIImage(named: SportsCategory.getIconNameFor(sportId: sportId))
-        categoryImageView.tintColor = UIColor(SportsCategory.getTintColor(sportId: sportId))
+        categoryImageView.tintColor = UIColor(themeService.getTintColor(sportId: sportId))
 
         titleLabel.textColor = UIColor(themeService.selectedTheme.mainTextColour)
 

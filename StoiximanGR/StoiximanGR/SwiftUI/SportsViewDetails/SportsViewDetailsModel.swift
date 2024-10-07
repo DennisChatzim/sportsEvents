@@ -9,7 +9,7 @@ import SwiftUI
 
 class SportsViewDetailsModel: ObservableObject {
     
-    @Published var dataManager = DataManager.shared
+    @Published var dataManager: DataManager
 
     @Published var sportsEvent: SportsEvent
 
@@ -17,9 +17,11 @@ class SportsViewDetailsModel: ObservableObject {
     
     var disposeBag: DisposeBagForCombine = []
 
-    init(sportsEvent: SportsEvent) {
+    init(sportsEvent: SportsEvent,
+         dataManager: DataManager) {
 
         self.sportsEvent = sportsEvent
+        self.dataManager = dataManager
         isFavourite = sportsEvent.isFavourite
     }
     

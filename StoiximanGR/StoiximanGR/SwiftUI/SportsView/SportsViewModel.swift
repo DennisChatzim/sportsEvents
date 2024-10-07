@@ -11,7 +11,7 @@ import SwiftUI
 class SportsViewModel: ObservableObject {
     
     @Published var allCategories: [SportsCategory] = []
-    @Published var isLoading = false
+    @Published var isLoading = true // We start with true because we need to make sure that Loaders are shown imediately when application starts until we get the first data !
     @Published var errorMessage: String? = nil
     @Published var showAlert = false
 
@@ -54,7 +54,7 @@ class SportsViewModel: ObservableObject {
         do {
             try await networkManager.fetchSportsEvents()
         } catch {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { // we need this in order to keep the http can in background thread and the result handling in Main thred -> Update UI
                 self.isLoading = false
                 self.errorMessage = error.localizedDescription
                 self.showAlert = true
@@ -71,7 +71,7 @@ class SportsViewModel: ObservableObject {
         }
     }
     
-    func isCollapsed(category: SportsCategory) -> Bool {
+    func isCategoryCollapsed(category: SportsCategory) -> Bool {
         return collapsedCategories.contains(where: { $0.sportId == category.sportId })
     }
     

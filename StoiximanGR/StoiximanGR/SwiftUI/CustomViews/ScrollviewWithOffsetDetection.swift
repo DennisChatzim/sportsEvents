@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// Right now (7 October 2024) this is our best choice to detect dragging offset in SwiftUI ScrollView:
+
 struct ScrollviewWithOffsetDetection<Content>: View where Content: View {
     
     let axes: Axis.Set = .vertical

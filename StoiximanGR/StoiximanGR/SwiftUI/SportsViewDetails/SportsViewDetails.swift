@@ -12,7 +12,7 @@ struct SportsViewDetails: View {
     
     @Environment(\.router) var navRouter
     @ObservedObject var model: SportsViewDetailsModel
-    @ObservedObject var themeService = ThemeService.shared
+    @ObservedObject var themeService: ThemeService
 
     var body: some View {
         
@@ -67,5 +67,7 @@ struct SportsViewDetails: View {
                                                                              eventName: "Event name",
                                                                              eventDate: Date(),
                                                                              isFavourite: false,
-                                                                             defaultPriorityIndex: 0)))
+                                                                             defaultPriorityIndex: 0),
+                                                    dataManager: DataManager.shared),
+                      themeService: ThemeService.shared)
 }

@@ -37,6 +37,8 @@
 		92628A8B2CB1B4530022D1C6 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92628A8A2CB1B4470022D1C6 /* LoaderView.swift */; };
 		92628A8D2CB1B4680022D1C6 /* CircularLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92628A8C2CB1B4600022D1C6 /* CircularLoaderView.swift */; };
 		92628A8F2CB1B5050022D1C6 /* BounceTapModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */; };
+		926A50772CB3B193005B16CE /* LoaderViewForDragToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A50762CB3B193005B16CE /* LoaderViewForDragToRefresh.swift */; };
+		926A50792CB3B2BF005B16CE /* CustomDragToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */; };
 		92CCF0042CB28A4300387DA2 /* ScrollviewWithOffsetDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF0032CB28A3800387DA2 /* ScrollviewWithOffsetDetection.swift */; };
 		92CCF0062CB29DFA00387DA2 /* SportsViewDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF0052CB29DEF00387DA2 /* SportsViewDetailsModel.swift */; };
 		92CCF0162CB2B0EB00387DA2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247FDE02CB10FE2006E37FE /* DataManager.swift */; };
@@ -116,6 +118,8 @@
 		92628A8A2CB1B4470022D1C6 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		92628A8C2CB1B4600022D1C6 /* CircularLoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularLoaderView.swift; sourceTree = "<group>"; };
 		92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceTapModifier.swift; sourceTree = "<group>"; };
+		926A50762CB3B193005B16CE /* LoaderViewForDragToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderViewForDragToRefresh.swift; sourceTree = "<group>"; };
+		926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDragToRefresh.swift; sourceTree = "<group>"; };
 		92B385562CB10B3200B8AE69 /* StoiximanGR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoiximanGR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B385672CB10B3400B8AE69 /* StoiximanGRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoiximanGRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B385712CB10B3400B8AE69 /* StoiximanGRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoiximanGRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -293,8 +297,8 @@
 			isa = PBXGroup;
 			children = (
 				9247FDFE2CB10FE2006E37FE /* StoiximanGRApp.swift */,
-				9247FDF82CB10FE2006E37FE /* SwiftUI */,
 				9247FDFA2CB10FE2006E37FE /* UIKit */,
+				9247FDF82CB10FE2006E37FE /* SwiftUI */,
 				9247FDEC2CB10FE2006E37FE /* Services */,
 				924996D32CB1181E00B12592 /* StringsLocalization */,
 				9247FDFB2CB10FE2006E37FE /* Assets.xcassets */,
@@ -316,9 +320,11 @@
 		92628A822CB158D70022D1C6 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				92628A832CB158FD0022D1C6 /* BackButtonView.swift */,
 				92CCF0032CB28A3800387DA2 /* ScrollviewWithOffsetDetection.swift */,
 				92628A892CB1B43E0022D1C6 /* CustomLoader */,
+				926A507A2CB3C52F005B16CE /* CustomDragToRefreshViews */,
+				92628A832CB158FD0022D1C6 /* BackButtonView.swift */,
+				92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -328,9 +334,17 @@
 			children = (
 				92628A8A2CB1B4470022D1C6 /* LoaderView.swift */,
 				92628A8C2CB1B4600022D1C6 /* CircularLoaderView.swift */,
-				92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */,
 			);
 			path = CustomLoader;
+			sourceTree = "<group>";
+		};
+		926A507A2CB3C52F005B16CE /* CustomDragToRefreshViews */ = {
+			isa = PBXGroup;
+			children = (
+				926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */,
+				926A50762CB3B193005B16CE /* LoaderViewForDragToRefresh.swift */,
+			);
+			path = CustomDragToRefreshViews;
 			sourceTree = "<group>";
 		};
 		92B3854D2CB10B3200B8AE69 = {
@@ -539,6 +553,7 @@
 				9247FE082CB10FE2006E37FE /* NetworkError.swift in Sources */,
 				9247FE092CB10FE2006E37FE /* NetworkManager.swift in Sources */,
 				92628A8F2CB1B5050022D1C6 /* BounceTapModifier.swift in Sources */,
+				926A50792CB3B2BF005B16CE /* CustomDragToRefresh.swift in Sources */,
 				9247FE0A2CB10FE2006E37FE /* NetworkRequest.swift in Sources */,
 				92CCF0772CB2BE1000387DA2 /* CategoryHeader.swift in Sources */,
 				9247FE0C2CB10FE2006E37FE /* MainTabView.swift in Sources */,
@@ -551,6 +566,7 @@
 				9247FE0E2CB10FE2006E37FE /* RouterNavigation.swift in Sources */,
 				9247FE0F2CB10FE2006E37FE /* HorizontalListView.swift in Sources */,
 				92CCF0792CB2CC9900387DA2 /* HorizontalEventsModel.swift in Sources */,
+				926A50772CB3B193005B16CE /* LoaderViewForDragToRefresh.swift in Sources */,
 				9247FE102CB10FE2006E37FE /* SportsView.swift in Sources */,
 				9247FE112CB10FE2006E37FE /* SportsViewModel.swift in Sources */,
 				9247FE122CB10FE2006E37FE /* SportsViewDetails.swift in Sources */,

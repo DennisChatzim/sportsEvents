@@ -8,21 +8,29 @@
 import SwiftUI
 import Combine
 
+public func getEventCellWidth() -> CGFloat {
+    let defaultWidth = UIScreen.main.bounds.size.width / 4.0
+    let minWidth: CGFloat = 70.0
+    let maxWidth: CGFloat = 150.0
+    let filterMinWidth = max(defaultWidth, minWidth) // This will ensure that for very small screen sizes the width will never be LESS than 70.0
+    return min(filterMinWidth, maxWidth)             // This will ensure that in LARGE screen such iPads the width will never be TOO LARGE, it will have max width = 150
+}
+
 struct HorizontalListView: View {
     
     @ObservedObject var model: HorizontalEventsModel
-    @ObservedObject var themeService: ThemeService
+    @State var theme: Theme
     @ObservedObject var timerManager = TimerManager.shared
 
     init(sportId: String,
          dataManager: DataManager,
-         themeService: ThemeService,
+         theme: Theme,
          itemWidth: CGFloat,
          onEventTap: @escaping (SportsEvent) -> Void
     ) {
         
         model = HorizontalEventsModel(sportId: sportId, dataManager: dataManager)
-        self.themeService = themeService
+        self.theme = theme
         self.itemWidth = itemWidth
         self.onEventTap = onEventTap
     }
@@ -49,7 +57,7 @@ struct HorizontalListView: View {
                                 .padding(.vertical, 6)
                                 .padding(.horizontal, 5)
                                 .overlay(RoundedRectangle(cornerRadius: 6)
-                                    .stroke(themeService.selectedTheme.customTextColour, lineWidth: 1)
+                                    .stroke(theme.customTextColour, lineWidth: 1)
                                     .padding(1))
 
                             Image(systemName: sportsEvent.isFavourite ? "star.fill" : "star")
@@ -57,7 +65,7 @@ struct HorizontalListView: View {
                                 .scaledToFit()
                                 .frame(width: 25)
                                 .background(Color.clear)
-                                .foregroundColor(sportsEvent.isFavourite ? themeService.selectedTheme.favouriteActiveColour : themeService.selectedTheme.favouriteInactiveColour)
+                                .foregroundColor(sportsEvent.isFavourite ? theme.favouriteActiveColour : theme.favouriteInactiveColour)
                                 .padding(.vertical, 2)
                                 .onTapGesture {
                                     model.updateFavourite(eventId: sportsEvent.eventId,
@@ -68,13 +76,13 @@ struct HorizontalListView: View {
                                 .font(Font.system(size: 13, weight: .regular))
                                 .multilineTextAlignment(.center)
                                 .lineLimit(3)
-                                .minimumScaleFactor(1.0)
-                            
+
                         }
                         .frame(width: itemWidth)
                         .bounceTap(withBorder: true,
                                    extraBounce: false,
                                    pressedBGColor: Color.clear,
+                                   theme: theme,
                                    action: {
                             onEventTap(sportsEvent)
                         })
@@ -83,20 +91,19 @@ struct HorizontalListView: View {
                 .animation(Animation.linear(duration: 0.3), value: model.events)
                 
             }
-            .frame(height: 140)
-            .padding(.vertical, 3)
+            .frame(height: 145)
             
         }
-        .background(themeService.selectedTheme.mainBGColor)
-        
+        .background(theme.mainBGColor)
+        .animation(.easeInOut(duration: 0.5), value: theme)
+
     }
 }
-
 
 #Preview {
     HorizontalListView(sportId: "sportId",
                        dataManager: DataManager.shared,
-                       themeService: ThemeService.shared,
+                       theme: ThemeService.shared.selectedTheme,
                        itemWidth: 10.0,
                        onEventTap: { _ in })
 }

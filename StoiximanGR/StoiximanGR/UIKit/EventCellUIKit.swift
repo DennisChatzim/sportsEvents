@@ -61,7 +61,7 @@ class EventCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             remainingTimeLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
             remainingTimeLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 13.0),
-            remainingTimeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/4.0 * 0.8),
+            remainingTimeLabel.widthAnchor.constraint(equalToConstant: getEventCellWidth() * 0.8),
             remainingTimeLabel.heightAnchor.constraint(equalToConstant: 28)
         ])
 
@@ -75,7 +75,7 @@ class EventCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: favoriteIcon.bottomAnchor, constant: 5),
-            titleLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/4.0),
+            titleLabel.widthAnchor.constraint(equalToConstant: getEventCellWidth()),
         ])
         
     }

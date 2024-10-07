@@ -15,13 +15,13 @@ struct LoaderView: View  {
     @State private var duration = 0.7
     let radius: CGFloat = 20.0
     @State var ballsStyle = true
-    @ObservedObject var themeService = ThemeService.shared
+    @State var theme: Theme
 
     var body: some View {
 
         ZStack {
             
-            themeService.selectedTheme.mainBGColor.opacity(0.3)
+            theme.mainBGColor.opacity(0.3)
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
@@ -38,15 +38,14 @@ struct LoaderView: View  {
                             .background(Color.clear)
                             .clipShape(Circle())
                             .opacity(ballsStyle ? 1.0 : 0.0)
-                            // .rotationEffect(Angle.degrees(-degree)) // Rotate the entire set of dots
-                        
+                            .shadow(color: Color.blue, radius: 10)
                     )
                     .animation(Animation.easeIn(duration: duration * 1.5).repeatForever(autoreverses: true), value: degree)
                     .frame(width: 60, height: 60)
                     .rotationEffect(Angle(degrees: Double(degree)))
                     .animation(Animation.linear(duration: duration).repeatForever(autoreverses: false), value: degree)
                     .overlay(
-                        CircularLoaderView(shouldMoredots: true)
+                        CircularLoaderView(shouldMoredots: true, theme: theme)
                             .overlay(
                                 Circle()
                                     .trim(from: 0.0, to: spinnerLength)
@@ -64,6 +63,7 @@ struct LoaderView: View  {
                     .bounceTap(withBorder: false,
                                extraBounce: true,
                                pressedBGColor: Color.clear,
+                               theme: theme,
                                action: { })
                     .allowsHitTesting(ballsStyle)
                     .edgesIgnoringSafeArea(.all)
@@ -89,12 +89,13 @@ struct LoaderView: View  {
 
 
 #Preview {
-    LoaderView()
+    LoaderView(theme: ThemeService.shared.selectedTheme)
 }
 
 struct LoaderViewModifier: ViewModifier {
     
     @Binding var isLoading: Bool
+    @State var theme: Theme
     
     func body(content: Content) -> some View {
         
@@ -104,7 +105,7 @@ struct LoaderViewModifier: ViewModifier {
                 .overlay(
                     ZStack {
                         if isLoading {
-                            LoaderView()
+                            LoaderView(theme: theme)
                                 .opacity(1.0)
                                 .animation(.easeInOut(duration: 0.3), value: isLoading)
                             
@@ -124,31 +125,9 @@ struct LoaderViewModifier: ViewModifier {
 extension View {
     
     func loaderView(isLoading: Binding<Bool>) -> some View {
-        self.modifier(LoaderViewModifier(isLoading: isLoading))
+        self.modifier(LoaderViewModifier(isLoading: isLoading,
+                                         theme: ThemeService.shared.selectedTheme))
     }
-}
-
-
-struct LoaderViewForDragToRefresh: View  {
     
-    @State var rotationAngle: Double = 0.0
-    @State var duration: CGFloat = 1.0
-
-    var body: some View {
-        
-        Image("footBall")
-            .resizable()
-            .scaledToFit()
-            .background(Color.clear)
-            .clipShape(Circle())
-            .frame(width: 50, height: 50)
-            .rotationEffect(Angle.degrees(rotationAngle)) // Rotate the entire set of dots
-            .animation(.linear(duration: duration).repeatForever(autoreverses: false), value: rotationAngle)
-            .onAppear {
-                withAnimation {
-                    self.rotationAngle = 360
-                }
-            }
-        
-    }
+    
 }

@@ -36,7 +36,6 @@ final class SportsViewModelTests: XCTestCase {
         let mockNetworkManager = MockNetworkManager(success: true, error: nil)
 
         let categories = [SportsCategory(sportId: "1", categoryName: "Football", allEventsOfThisCategory: [])]
-        // mockDataManager.allCategories = categories
         
         viewModel = SportsViewModel(dataManager: mockDataManager, networkManager: mockNetworkManager)
 

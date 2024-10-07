@@ -15,7 +15,7 @@ struct BounceDragModifier: ViewModifier {
     @State var withBorder: Bool = true
     @State var pressedBGColor: Color = .clear
     @State var extraBounce: Bool
-    @ObservedObject var themeService = ThemeService.shared
+    @State var theme: Theme
 
     var action: () -> Void
     
@@ -24,8 +24,8 @@ struct BounceDragModifier: ViewModifier {
             .padding(.all, 5)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(isPressed ? themeService.selectedTheme.mainTextColour : Color.clear, lineWidth: 2)
-                    .shadow(color: isPressed ? themeService.selectedTheme.mainTextColour.opacity(0.5) : Color.clear, radius: 10)
+                    .stroke(isPressed ? theme.mainTextColour : Color.clear, lineWidth: 2)
+                    .shadow(color: isPressed ? theme.mainTextColour.opacity(0.5) : Color.clear, radius: 10)
                     .animation(.easeInOut(duration: 0.2), value: isPressed)
                     .opacity(withBorder && isPressed ? 1.0 : 0.0)
                     .padding(.all, 0)
@@ -34,7 +34,7 @@ struct BounceDragModifier: ViewModifier {
             .background(pressedBGColor.cornerRadius(20).opacity(isPressed ? 1.0 : 0.0))
             .animation(.easeInOut(duration: 0.2), value: isPressed)
             .gesture(
-                TapGesture() // Capture tap action only, let ScrollView take priority on drag
+                TapGesture()
                     .onEnded {
                         if shouldTriggerTap {
                             isPressed = true // Start animation
@@ -52,11 +52,13 @@ extension View {
     
     func bounceTap(withBorder: Bool = true,
                    extraBounce: Bool = false,
-                   pressedBGColor: Color = .clear, //ThemeService.shared.selectedTheme.gr,
+                   pressedBGColor: Color = .clear,
+                   theme: Theme,
                    action: @escaping () -> Void) -> some View {
         self.modifier(BounceDragModifier(withBorder: withBorder,
                                          pressedBGColor: pressedBGColor,
                                          extraBounce: extraBounce,
+                                         theme: theme,
                                          action: action))
     }
     

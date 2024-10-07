@@ -64,7 +64,7 @@ enum Tab : String, CaseIterable {
 struct CustomTabBar: View {
     
     @Binding var selectedTab: Tab
-    @ObservedObject var themeService = ThemeService.shared
+    @State var theme: Theme
 
     @State var isAnimating = false
     @Namespace private var namespace
@@ -94,22 +94,19 @@ struct CustomTabBar: View {
         .padding(.bottom, 25)
         .background(
             ZStack {
-                themeService.selectedTheme.mainBGColor
-                    .opacity(1.0) // Adjust opacity to control blending
-                    .edgesIgnoringSafeArea([.leading, .trailing, .bottom])
-                    .animation(.easeInOut, value: themeService.selectedTheme) // Fade animation for theme changes
-            }
-                .edgesIgnoringSafeArea([.leading, .trailing, .bottom])
+                theme.mainBGColor
+                    .animation(.easeInOut(duration: 0.5), value: true)
+            }.edgesIgnoringSafeArea([.leading, .trailing, .bottom])
         )
         .overlay(
             VStack {
                 Rectangle()
-                    .fill(themeService.selectedTheme.mainBGColor)
+                    .fill(theme.mainBGColor)
                     .frame(height: 1)
                 Spacer()
             }
         )
-        
+
     }
     
     func tabItemTapped(newTab: Tab) {
@@ -141,7 +138,6 @@ struct CustomTabBar: View {
             }
             
         }
-        
         
     }
     
@@ -179,10 +175,9 @@ struct CustomTabBar: View {
                         .resizable()
                         .scaledToFit()
                         .padding(.bottom, 4)
-                        //.frame(width: 30, height: 30)
+                        .frame(height: 36)
                         .foregroundColor(selectedTab == tab ? .blue : .gray)
                         .scaleEffect(selectedTab == tab ? scaleEffect : 1.0)
-                        .frame(height: 36)
                         .rotationEffect(.degrees(selectedTab == tab ? rotationDegrees : 0.0))
                         .animation(selectedTab == tab ? .spring(response: 0.3, dampingFraction: 0.4) : .none, value: selectedTab == tab && isAnimating)
 
@@ -197,7 +192,7 @@ struct CustomTabBar: View {
             }
             .background(
                 ZStack {
-                    themeService.selectedTheme.mainBGColor
+                    theme.mainBGColor
                         .allowsHitTesting(false)
                         .opacity(selectedTab == tab && isAnimating ? 0.3 : 0.0)
                         .animation(selectedTab == tab ? .easeOut(duration: 0.1) : nil, value: selectedTab == tab)

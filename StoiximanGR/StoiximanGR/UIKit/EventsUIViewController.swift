@@ -11,6 +11,7 @@ import Combine
 
 class EventsUIViewController: UIViewController {
     
+    // All singletons should be efined here if we had only UIkit implementation
     var dataManager = DataManager.shared
     var themeService = ThemeService.shared
     var timerManager = TimerManager.shared
@@ -18,9 +19,11 @@ class EventsUIViewController: UIViewController {
     private var model = SportsViewModel(dataManager: DataManager.shared, networkManager: NetworkManager.shared)
     private var categoryVisibility: [Bool] = []
     private var disposeBag: DisposeBagForCombine = []
+    
     private let refreshControl = UIRefreshControl()
     var mySpinnerView = UIView(frame: .zero)
-    
+    var backgroundView = UIView() // We need this in order to have consistent background colour behind the scrollable contant when Collection view is scolled to full bottom edge
+
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -30,73 +33,86 @@ class EventsUIViewController: UIViewController {
         
         return collectionView
     }()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground() // This makes the nav bar transparent
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-    }
-    
-    // We need this in order to have consistent background colour behind the scrollable contant when Collection view is scolled to full bottom edge
-    private let backgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(ThemeService.shared.selectedTheme.mainBGColor) // Set the desired background color
-        return view
-    }()
-    
+        
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         setupUI()
-        
-        Publishers.CombineLatest(model.$allCategories.dropFirst(),
-                                 themeService.$selectedTheme.dropFirst())
-        .receive(on: DispatchQueue.main)
-        .sink(receiveValue: { [weak self] newCategoriesArrived, theme in
-            self?.refreshAllView(theme: theme)
-        })
-        .store(in: &disposeBag)
-        
-        // Its always safer to call this function always AFTER the Reactive subscribes above !
-        reloadData()
+
+        setUpData()
         
     }
-    
-    func refreshAllView(theme: Theme) {
-        collectionView.reloadData()
-        collectionView.backgroundColor = UIColor(theme.mainBGColor)
-        backgroundView.backgroundColor = UIColor(theme.mainBGColor)
-        view.backgroundColor = UIColor(theme.navigationBarBackground)
-        setNavigationBarItems()
-    }
-    
+
     private func setupUI() {
         
         setNavigationBarItems()
+                
+        addBackgroundView()
+
+        addCollectionView()
         
-        // Configure refresh control
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        collectionView.refreshControl = refreshControl // Add refresh control to collection view
+        addSpinnerView()
+        
+        showSpinner()
+                
+    }
+        
+    func setNavigationBarItems() {
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
+        // Add bar button items
+        // Create custom UIBarButtonItem with system icons
+        let profileButton = UIBarButtonItem(
+            image: UIImage(systemName: "person.fill"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapProfile)
+        )
+        
+        let fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        fixedSpace.width = 50
+        
+        let themeButton = UIBarButtonItem(
+            image: UIImage(systemName: themeService.isDarkThemeActive ? "moon.fill" : "sun.max.fill"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapTheme)
+        )
+        themeButton.width = 40
+        
+        let settingsButton = UIBarButtonItem(
+            image: UIImage(systemName:  "gearshape.fill"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSettings)
+        )
+        
+        navigationItem.leftBarButtonItems = [profileButton, fixedSpace]
+        navigationItem.rightBarButtonItems = [settingsButton, themeButton]
+        
+        // Your existing logo setup
+        let logoImageView = UIImageView(image: UIImage(named: "logo"))
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.backgroundColor = .clear
+        logoImageView.frame = CGRect.init(x: 0, y: 0,
+                                          width: UIScreen.main.bounds.width * 0.8,
+                                          height: 40)
+        self.navigationItem.titleView = logoImageView
+        
+        
+    }
+
+    // This is needed to have consistent bg colour at the top safe area
+    func addBackgroundView() {
+
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backgroundView)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(HorizontalCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalCollectionViewCell.identifier)
-        collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeader.identifier)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
-        
-        view.addSubview(collectionView)
-        
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
+      
+        backgroundView.backgroundColor = UIColor(themeService.selectedTheme.mainBGColor) // Set the desired background color
+
         NSLayoutConstraint.activate([
             
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -104,25 +120,39 @@ class EventsUIViewController: UIViewController {
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
-        addSpinnerView()
-        showSpinner()
+    }
+    
+    func addCollectionView() {
+        
+        let paddingTop = ((UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first(where: { $0.isKeyWindow })?.safeAreaInsets ?? .zero).top
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HorizontalCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalCollectionViewCell.identifier)
         collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeader.identifier)
-        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
+        view.addSubview(collectionView)
+       
+        NSLayoutConstraint.activate([
+                        
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: paddingTop + 50),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        // Configure refresh control
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        collectionView.refreshControl = refreshControl // Add refresh control to collection view
+
     }
     
     func addSpinnerView() {
         
-        mySpinnerView.backgroundColor = UIColor.gray.withAlphaComponent(0.5) //(themeService.selectedTheme.mainBGColor.opacity(0.5))
+        mySpinnerView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         
         let myProgressView = UIActivityIndicatorView(style: .large)
         myProgressView.translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +162,7 @@ class EventsUIViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             myProgressView.centerXAnchor.constraint(equalTo: self.mySpinnerView.centerXAnchor),
-            myProgressView.centerYAnchor.constraint(equalTo: self.mySpinnerView.centerYAnchor),
+            myProgressView.centerYAnchor.constraint(equalTo: self.mySpinnerView.centerYAnchor, constant: -50),
         ])
         
         mySpinnerView.translatesAutoresizingMaskIntoConstraints = false
@@ -147,42 +177,27 @@ class EventsUIViewController: UIViewController {
         
     }
     
-    func setNavigationBarItems() {
+    func setUpData() {
         
-        // Add bar button items
-        // Create custom UIBarButtonItem with system icons
-        let profileButton = UIBarButtonItem(
-            image: UIImage(systemName: "person.fill"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapProfile)
-        )
+        Publishers.CombineLatest(model.$allCategories.dropFirst(),
+                                 themeService.$selectedTheme.dropFirst())
+        .receive(on: DispatchQueue.main)
+        .sink(receiveValue: { [weak self] newCategoriesArrived, theme in
+            self?.refreshAllView(theme: theme)
+        })
+        .store(in: &disposeBag)
         
-        let themeButton = UIBarButtonItem(
-            image: UIImage(systemName: themeService.isDarkThemeActive ? "moon.fill" : "sun.max.fill"),  //UIImage(systemName: "moon.fill"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapTheme)
-        )
-        
-        let settingsButton = UIBarButtonItem(
-            image: UIImage(systemName:  "gearshape.fill"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapSettings)
-        )
-        
-        navigationItem.leftBarButtonItem = profileButton
-        navigationItem.rightBarButtonItems = [settingsButton, themeButton]
-        
-        // Your existing logo setup
-        let logoImageView = UIImageView(image: UIImage(named: "logo"))
-        logoImageView.contentMode = .scaleAspectFit
-        logoImageView.backgroundColor = .clear
-        logoImageView.frame = CGRect.init(x: 0, y: 0,
-                                          width: UIScreen.main.bounds.width * 0.8,
-                                          height: 40)
-        self.navigationItem.titleView = logoImageView
+        // Its always safer to call this function always AFTER the Reactive subscribes above !
+        reloadData()
+
+    }
+    
+    func refreshAllView(theme: Theme) {
+        collectionView.reloadData()
+        collectionView.backgroundColor = UIColor(theme.mainBGColor)
+        backgroundView.backgroundColor = UIColor(theme.mainBGColor)
+        view.backgroundColor = UIColor(theme.navigationBarBackground)
+        setNavigationBarItems()
     }
     
     func showSpinner() {

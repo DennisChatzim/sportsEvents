@@ -60,33 +60,4 @@ class SportsCategory: Hashable, Equatable, ObservableObject {
         }
     }
     
-    // MARK: Make specific tint on the category icon based on the category
-    static func getTintColor(sportId: String) -> Color {
-
-        switch sportId {
-        case "FOOT":
-            return ThemeService.shared.selectedTheme.mainTextColour
-        case "BASK":
-            return Color.clear
-        case "TENN":
-            return Color.clear
-        case "VOLL":
-            return Color.clear
-        case "DART":
-            return ThemeService.shared.selectedTheme.mainTextColour
-        case "TABL":
-            return Color.clear
-        case "ESPS":
-            return ThemeService.shared.selectedTheme.mainTextColour
-        case "ICEH":
-            return ThemeService.shared.selectedTheme.mainTextColour
-        case "SNOO":
-            return ThemeService.shared.selectedTheme.mainTextColour
-        case "HAND":
-            return ThemeService.shared.selectedTheme.mainTextColour
-        default:
-            return ThemeService.shared.selectedTheme.mainTextColour
-        }
-    }
-    
 }

@@ -13,7 +13,7 @@ class DataManager: ObservableObject {
     static let shared = DataManager()
 
     @Published var allCategories: [SportsCategory] = []
-
+    
     func setNewCategories(newCategories: [SportsCategoryDTO]) {
         
         var defaultPriorityIndex = 0

@@ -10,7 +10,7 @@ import SwiftUI
 final class RouterNav: ObservableObject {
     
     public enum Destination: Codable, Hashable {
-        case eventDetails(sportsEvent: SportsEvent)
+        case eventDetails(sportsEvent: SportsEvent, themeService: ThemeService)
     }
     
     @Published var navPath = NavigationPath()
@@ -30,9 +30,10 @@ final class RouterNav: ObservableObject {
     
     func destinationView(viewDestination: Destination) -> some View {
         switch viewDestination {
-        case .eventDetails(let sportsEvent):
-            
-            return SportsViewDetails(model: SportsViewDetailsModel(sportsEvent: sportsEvent))
+        case .eventDetails(let sportsEvent, let themeService):
+            return SportsViewDetails(model: SportsViewDetailsModel(sportsEvent: sportsEvent,
+                                                                   dataManager: DataManager.shared),
+                                     themeService: themeService)
             
         }
     }

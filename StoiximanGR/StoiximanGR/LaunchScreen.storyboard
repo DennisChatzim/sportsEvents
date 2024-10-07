@@ -23,9 +23,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="iIz-4s-Xn4">
-                                <rect key="frame" x="46.666666666666657" y="378.66666666666669" width="300" height="132"/>
+                                <rect key="frame" x="71.666666666666686" y="378.66666666666669" width="249.99999999999994" height="132"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="iaH-9i-Cmk"/>
+                                    <constraint firstAttribute="width" constant="250" id="iaH-9i-Cmk"/>
                                 </constraints>
                             </imageView>
                         </subviews>

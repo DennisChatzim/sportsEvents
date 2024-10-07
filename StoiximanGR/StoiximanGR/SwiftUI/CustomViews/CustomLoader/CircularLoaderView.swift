@@ -10,29 +10,24 @@ import SwiftUI
 struct CircularLoaderView: View {
     
     @State var shouldMoredots = false
-    @ObservedObject var themeService = ThemeService.shared
+    @State var theme: Theme
+    
+    let dotSize: CGFloat = 12.0
+    let animationDuration: Double = 1.0 // Duration for the spring movement
+    
+    let rotationSpeed: Double = 1.2 // Slower rotation speed for the entire view
+    @State private var isAnimating = false
+    @State private var rotationAngle: Double = 0 // For rotating the entire view
+    @State var ballsStyle = true
     
     // Number of dots and their size
     func dotCount() -> Int {
         return shouldMoredots ? 5 : 3
     }
-    
-    let dotSize: CGFloat = 12.0
-    
-    let animationDuration: Double = 1.0 // Duration for the spring movement
-    
     func movementDistance() -> CGFloat {
         return shouldMoredots ? 120.0 : 40.0
     }
-    
-    let rotationSpeed: Double = 1.2 // Slower rotation speed for the entire view
-    
-    // State for controlling the animation
-    @State private var isAnimating = false
-    @State private var rotationAngle: Double = 0 // For rotating the entire view
-
-    @State var ballsStyle = true
-    
+        
     var body: some View {
         ZStack {
             ForEach(0..<dotCount(), id: \.self) { index in
@@ -47,16 +42,17 @@ struct CircularLoaderView: View {
                         Image(shouldMoredots ? "footBall" : "basketBallBall")
                             .resizable()
                             .scaledToFit()
-                            .foregroundColor(themeService.selectedTheme.mainTextColour)
+                            .foregroundColor(theme.mainTextColour)
                             .background(Color.clear)
                             .clipShape(Circle())
+                            .shadow(color: Color.blue, radius: 4)
                             .opacity(ballsStyle ? 1.0 : 0.0)
                     )
                     .frame(width: ballsStyle ? 1.5 * dotSize : dotSize, height: ballsStyle ? 2 * dotSize : dotSize)
                     .overlay(
                         ZStack {
                             if shouldMoredots {
-                                CircularLoaderView(shouldMoredots: false)
+                                CircularLoaderView(shouldMoredots: false, theme: theme)
                             } else {
                                 EmptyView()
                             }}
@@ -129,11 +125,11 @@ struct CircularLoaderView: View {
 
 struct CircularLoaderView_Previews: PreviewProvider {
     static var previews: some View {
-        CircularLoaderView()
+        CircularLoaderView(theme: ThemeService.shared.selectedTheme)
     }
 }
 
 
 #Preview {
-    CircularLoaderView()
+    CircularLoaderView(theme: ThemeService.shared.selectedTheme)
 }
