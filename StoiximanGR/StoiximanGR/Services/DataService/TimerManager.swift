@@ -47,7 +47,10 @@ class TimerManager: ObservableObject {
                 
                 instance.timer?.cancel()
                 instance.timer = nil
-                
+                // I did this change to help the UI having even better prformance
+                // The event Views will not be updated in both Screens (SwiftUI and UIkit), will be updaed only the current visible one by updating the corrent date object and observing accordingly from each view
+                // UIKit implementation will observe "currentDateUIKit"
+                // SwiftUI implementation will observe: "currentDateSwiftUI"
                 if isUIKitTimerEnabled {
                     instance.timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect().assign(to: \.currentDateUIKit, on: instance)
                 } else {
