@@ -16,6 +16,7 @@ class TimerManager: ObservableObject {
     // Added two different timers to improve performance and update only the visible View time remaing, When UIKit tab is selected only currentDateUIKit when SwiftUIScreen is selected only currentDateSwiftUI will be updated
     @Published var currentDateUIKit = Date()
     @Published var currentDateSwiftUI = Date()
+    private var disposeBag: DisposeBagForCombine = []
 
     // Ok so updating so many data Events = Views every second is not good idea
     // The reason that I kept it 1 second accuracy is that on real devices I didn't notice any performance issues, on simulator it has some minor scrolling gaps
@@ -24,23 +25,34 @@ class TimerManager: ObservableObject {
     // Also we should change the format of remaining time to show always "DD:HH:MM" = Days-Hour-Minutes -> example: "1d:22h:46m"
     // I did this already for the events that will start in more than 1 day -> format will be: "1d:22h:46m"
     var realtimeSecondsToUpdateRemainingTime: TimeInterval = 1.0
-    static var isUIKitTimerEnabled = true
+    
+    @Published var isUIKitTimerEnabled = true
 
     init() {
         
-        Timer.publish(every: realtimeSecondsToUpdateRemainingTime, on: .main, in: .common)
-            .autoconnect()
-            .filter { _ in TimerManager.isUIKitTimerEnabled }
-            .assign(to: &$currentDateUIKit)
+        $isUIKitTimerEnabled
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] isUIKitTimerEnabled in
+                guard let instance = self else { return }
+              
+                let timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect()
+                
+                if isUIKitTimerEnabled {
+                    
+                    timer.assign(to: &instance.$currentDateUIKit)
 
-        Timer.publish(every: realtimeSecondsToUpdateRemainingTime, on: .main, in: .common)
-            .autoconnect()
-            .filter { _ in !TimerManager.isUIKitTimerEnabled }
-            .assign(to: &$currentDateSwiftUI)
+                } else {
+                    
+                    timer.assign(to: &instance.$currentDateSwiftUI)
 
+                }
+                
+            })
+            .store(in: &disposeBag)
+        
     }
 
     func enableOnlyUIKitTimer(onlyUIKit: Bool) {
-        TimerManager.isUIKitTimerEnabled = onlyUIKit
+        isUIKitTimerEnabled = onlyUIKit
     }
 }
