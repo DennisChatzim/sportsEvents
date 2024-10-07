@@ -30,7 +30,9 @@ struct CustomDragToRefreshView: View {
                     
                     LoaderViewForDragToRefresh(degrees: $degressForRotationSpeed)
                         .onChange(of: position) { newPosition, _ in
-                            degressForRotationSpeed = position / maxDraggingToRefreshHeight * (4 * 360)
+                            DispatchQueue.main.async {
+                                degressForRotationSpeed = position / maxDraggingToRefreshHeight * (4 * 360)
+                            }
                             // debugPrint("onChange: New position CustomDragToRefreshView ? newPosition = \(newPosition), degressForRotationSpeed = \(degressForRotationSpeed)")
                         }
                         .padding(.top, 10)
@@ -56,7 +58,7 @@ struct CustomDragToRefreshView: View {
             }
             .onAppear {
                 degressForRotationSpeed = position / maxDraggingToRefreshHeight * (4 * 360)
-                debugPrint("New position CustomDragToRefreshView ? = \(position), degressForRotationSpeed = \(degressForRotationSpeed)")
+                // debugPrint("New position CustomDragToRefreshView ? = \(position), degressForRotationSpeed = \(degressForRotationSpeed)")
             }
         }
         .allowsHitTesting(false)

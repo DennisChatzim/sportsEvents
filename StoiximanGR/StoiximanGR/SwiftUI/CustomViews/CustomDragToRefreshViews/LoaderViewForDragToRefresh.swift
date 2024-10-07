@@ -25,9 +25,11 @@ struct LoaderViewForDragToRefresh: View  {
             .rotationEffect(Angle.degrees(rotationAngle))
             .animation(.linear(duration: duration).repeatForever(autoreverses: false), value: rotationAngle)
             .onChange(of: degrees) { newDegress, _ in
-                if newDegress > 0 {
-                    withAnimation {
-                        self.rotationAngle = newDegress
+                DispatchQueue.main.async {
+                    if newDegress > 0 {
+                        withAnimation {
+                            self.rotationAngle = newDegress
+                        }
                     }
                 }
                 // debugPrint("onChange: New position rotationAngle ? = \(rotationAngle), degressForRotationSpeed = \(newDegress)")
