@@ -11,7 +11,7 @@ import Combine
 
 class EventsUIViewController: UIViewController {
     
-    // All singletons should be efined here if we had only UIkit implementation
+    // All singletons should be efined here if we had only UIkit implementation and this screen was the Root View controller of the app
     var dataManager = DataManager.shared
     var themeService = ThemeService.shared
     var timerManager = TimerManager.shared
@@ -133,7 +133,7 @@ class EventsUIViewController: UIViewController {
         collectionView.register(HorizontalCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalCollectionViewCell.identifier)
         collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeader.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         view.addSubview(collectionView)
        
         NSLayoutConstraint.activate([
@@ -151,9 +151,7 @@ class EventsUIViewController: UIViewController {
     }
     
     func addSpinnerView() {
-        
-        mySpinnerView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
-        
+                
         let myProgressView = UIActivityIndicatorView(style: .large)
         myProgressView.translatesAutoresizingMaskIntoConstraints = false
         myProgressView.color = .white
@@ -167,7 +165,7 @@ class EventsUIViewController: UIViewController {
         
         mySpinnerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(mySpinnerView)
-        
+
         NSLayoutConstraint.activate([
             mySpinnerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             mySpinnerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
@@ -180,7 +178,7 @@ class EventsUIViewController: UIViewController {
     func setUpData() {
         
         Publishers.CombineLatest(model.$allCategories.dropFirst(),
-                                 themeService.$selectedTheme.dropFirst())
+                                 themeService.$selectedTheme)
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { [weak self] newCategoriesArrived, theme in
             self?.refreshAllView(theme: theme)
@@ -196,6 +194,7 @@ class EventsUIViewController: UIViewController {
         collectionView.reloadData()
         collectionView.backgroundColor = UIColor(theme.mainBGColor)
         backgroundView.backgroundColor = UIColor(theme.mainBGColor)
+        mySpinnerView.backgroundColor = UIColor(theme.mainBGColor).withAlphaComponent(0.5)
         view.backgroundColor = UIColor(theme.navigationBarBackground)
         setNavigationBarItems()
     }

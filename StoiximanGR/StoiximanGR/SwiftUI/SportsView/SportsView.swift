@@ -12,7 +12,9 @@ struct SportsView: View {
     
     @Environment(\.router) var navRouter
 
-    @ObservedObject var themeService: ThemeService // Keep ThemeService singletons in Views and DataManager to models
+    @ObservedObject var themeService: ThemeService // Keep ThemeService singleton in Views and DataManager to models
+    @ObservedObject var timerManager: TimerManager
+
     @ObservedObject var model: SportsViewModel
     @State private var position: CGFloat = 0.0
     
@@ -84,6 +86,7 @@ struct SportsView: View {
                         
                         HorizontalListView(sportId: category.sportId,
                                            dataManager: model.dataManager,
+                                           timerManager: timerManager,
                                            theme: themeService.selectedTheme,
                                            itemWidth: width,
                                            onEventTap: { sportsEvent in
@@ -171,6 +174,7 @@ struct SportsView: View {
  
 #Preview {
     SportsView(themeService: ThemeService.shared,
+               timerManager: TimerManager.shared,
                model: SportsViewModel(dataManager: DataManager.shared,
                                       networkManager: NetworkManager.shared))
 }

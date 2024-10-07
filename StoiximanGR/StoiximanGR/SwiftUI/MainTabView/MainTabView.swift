@@ -11,8 +11,10 @@ struct MainTabView: View {
     
     @ObservedObject var navRouter = RouterNav()
     
-    // Lets try to keep all singleton in one place -> Here is the best one because MainTabView is the Parent of ALL internal Views
+    // Lets try to keep the initial acces of all singleton in one place -> Here is the best one because MainTabView is the Parent of ALL internal Views and
+    // we will try to pass the singletons to child Views and models
     @StateObject var themeService = ThemeService.shared
+    @State var timerManager = TimerManager.shared // We don't want to declare it as "StateObject" because SwiftUI will re-Render the entire swiftUINavigationView every 1 second !
         
     // We need to create it and keep it here as variable of parent view of SportsView = MainTabView because:
     // 1.. When switching tabs we don't want to recreate the model of SportsView, we want the app to remember the model data, favourites etc of the SportsViewModel to have smooth and consistent UI
@@ -49,29 +51,23 @@ struct MainTabView: View {
         
     }
     
-    var customTabBar: CustomTabBar {
-        
-        return CustomTabBar(selectedTab: $selectedTab,
-                            theme: themeService.selectedTheme) { newTab in
-            
-            guard newTab == selectedTab else { return }
-            
-            // If user is inside Event details view and tab the tab item we should navigation back !
-            navRouter.navigateBack()
-
-        }
-    }
-    
-    var sportsViewSwiftUI: some View {
-        SportsView(themeService: themeService, model: sportsModel)
-    }
-    
     var sportsViewUIKit: some View {
         
         CustomNavigationControllerWrapper()
             .preferredColorScheme(themeService.selectedTheme.colorScheme)
             .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
 
+    }
+    
+    var uiKitWrapperController: some View {
+
+        ZStack {
+                        
+            sportsViewUIKit
+
+        }
+        .opacity(selectedTab == .sportsUIKit ? 1.0 : 0.0)
+        .offset(x: selectedTab == .sportsUIKit ? 0.0 : -1.0 * UIScreen.main.bounds.width)
     }
     
     var swiftUINavigationView: some View {
@@ -87,6 +83,19 @@ struct MainTabView: View {
                     .navigationDestination(for: RouterNav.Destination.self) { destination in
                         navRouter.destinationView(viewDestination: destination)
                     }
+                    .onAppear {
+                        
+                        let appearance = UINavigationBarAppearance()
+                        appearance.configureWithOpaqueBackground()
+                        appearance.backgroundColor = UIColor(themeService.selectedTheme.navigationBarBackground)
+                        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+                        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+                        
+                        UINavigationBar.appearance().standardAppearance = appearance
+                        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+                        UINavigationBar.appearance().compactAppearance = appearance
+                        UINavigationBar.appearance().tintColor = UIColor.white // Set bar button item color
+                    }
 
             }
             
@@ -97,26 +106,23 @@ struct MainTabView: View {
 
     }
     
-    var uiKitWrapperController: some View {
-        ZStack {
-                        
-            sportsViewUIKit
-                .onAppear {
-                    let appearance = UINavigationBarAppearance()
-                    appearance.configureWithOpaqueBackground()
-                    appearance.backgroundColor = UIColor(themeService.selectedTheme.navigationBarBackground)
-                    appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-                    appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-                    
-                    UINavigationBar.appearance().standardAppearance = appearance
-                    UINavigationBar.appearance().scrollEdgeAppearance = appearance
-                    UINavigationBar.appearance().compactAppearance = appearance
-                    UINavigationBar.appearance().tintColor = UIColor.white // Set bar button item color
-                }
+    var sportsViewSwiftUI: some View {
+        SportsView(themeService: themeService,
+                   timerManager: timerManager,
+                   model: sportsModel)
+    }
+    
+    var customTabBar: CustomTabBar {
+        
+        return CustomTabBar(selectedTab: $selectedTab,
+                            theme: themeService.selectedTheme) { newTab in
             
+            guard newTab == selectedTab else { return }
+            
+            // If user is inside Event details view and tab the tab item we should navigation back !
+            navRouter.navigateBack()
+
         }
-        .opacity(selectedTab == .sportsUIKit ? 1.0 : 0.0)
-        .offset(x: selectedTab == .sportsUIKit ? 0.0 : -1.0 * UIScreen.main.bounds.width)
     }
     
     @ToolbarContentBuilder

@@ -39,6 +39,8 @@
 		92628A8F2CB1B5050022D1C6 /* BounceTapModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */; };
 		926A50772CB3B193005B16CE /* LoaderViewForDragToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A50762CB3B193005B16CE /* LoaderViewForDragToRefresh.swift */; };
 		926A50792CB3B2BF005B16CE /* CustomDragToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */; };
+		926A507D2CB411A3005B16CE /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A507C2CB4119F005B16CE /* Config.swift */; };
+		926A507E2CB411A3005B16CE /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A507C2CB4119F005B16CE /* Config.swift */; };
 		92CCF0042CB28A4300387DA2 /* ScrollviewWithOffsetDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF0032CB28A3800387DA2 /* ScrollviewWithOffsetDetection.swift */; };
 		92CCF0062CB29DFA00387DA2 /* SportsViewDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF0052CB29DEF00387DA2 /* SportsViewDetailsModel.swift */; };
 		92CCF0162CB2B0EB00387DA2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247FDE02CB10FE2006E37FE /* DataManager.swift */; };
@@ -120,6 +122,8 @@
 		92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceTapModifier.swift; sourceTree = "<group>"; };
 		926A50762CB3B193005B16CE /* LoaderViewForDragToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderViewForDragToRefresh.swift; sourceTree = "<group>"; };
 		926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDragToRefresh.swift; sourceTree = "<group>"; };
+		926A507B2CB4116F005B16CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		926A507C2CB4119F005B16CE /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		92B385562CB10B3200B8AE69 /* StoiximanGR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoiximanGR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B385672CB10B3400B8AE69 /* StoiximanGRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoiximanGRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B385712CB10B3400B8AE69 /* StoiximanGRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoiximanGRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,10 +217,11 @@
 		9247FDEB2CB10FE2006E37FE /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				9247FDE82CB10FE2006E37FE /* NetworkManager.swift */,
+				926A507C2CB4119F005B16CE /* Config.swift */,
+				9247FDE92CB10FE2006E37FE /* NetworkRequest.swift */,
 				9247FDE42CB10FE2006E37FE /* NetworkDataModels */,
 				9247FDE72CB10FE2006E37FE /* NetworkEnums */,
-				9247FDE82CB10FE2006E37FE /* NetworkManager.swift */,
-				9247FDE92CB10FE2006E37FE /* NetworkRequest.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -296,6 +301,7 @@
 		9247FDFF2CB10FE2006E37FE /* StoiximanGR */ = {
 			isa = PBXGroup;
 			children = (
+				926A507B2CB4116F005B16CE /* Info.plist */,
 				9247FDFE2CB10FE2006E37FE /* StoiximanGRApp.swift */,
 				9247FDFA2CB10FE2006E37FE /* UIKit */,
 				9247FDF82CB10FE2006E37FE /* SwiftUI */,
@@ -559,6 +565,7 @@
 				9247FE0C2CB10FE2006E37FE /* MainTabView.swift in Sources */,
 				9247FE0D2CB10FE2006E37FE /* NavigationRouter.swift in Sources */,
 				92628A882CB19E300022D1C6 /* CustomNavigationController.swift in Sources */,
+				926A507E2CB411A3005B16CE /* Config.swift in Sources */,
 				92628A842CB158FD0022D1C6 /* BackButtonView.swift in Sources */,
 				92CCF0752CB2BDE700387DA2 /* EventCellUIKit.swift in Sources */,
 				92CCF0062CB29DFA00387DA2 /* SportsViewDetailsModel.swift in Sources */,
@@ -585,6 +592,7 @@
 				92CCF0212CB2B25800387DA2 /* SportsViewModel.swift in Sources */,
 				92CCF0182CB2B11300387DA2 /* SportsCategory.swift in Sources */,
 				92CCF01B2CB2B13E00387DA2 /* ThemeService.swift in Sources */,
+				926A507D2CB411A3005B16CE /* Config.swift in Sources */,
 				92CCF0172CB2B10200387DA2 /* SportsEvent.swift in Sources */,
 				92CCF0162CB2B0EB00387DA2 /* DataManager.swift in Sources */,
 				92CCF01F2CB2B18000387DA2 /* NetworkError.swift in Sources */,
@@ -771,6 +779,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoiximanGR/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports-games";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -813,6 +822,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoiximanGR/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports-games";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

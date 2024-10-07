@@ -9,9 +9,7 @@ import Network
 import Foundation
 
 enum APIEndpoint {
-    
-    static let baseURL = "https://ios-kaizen.github.io"
-    
+        
     case sportsEventsList
     case sportEventDetails
     
@@ -34,7 +32,7 @@ enum APIEndpoint {
     }
     
     var url: URL? {
-        return URL(string: APIEndpoint.baseURL + path)
+        return URL(string: Config.baseURL + path)
     }
 }
 

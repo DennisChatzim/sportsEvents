@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Data Transfer Object
+// Data Transfer Object: Here we define the expecting object as it comes from server !
 struct SportsEventDTO: Codable, Identifiable, Equatable, Hashable {
 
     let i: String  // event id -> Example: "22911144"
@@ -37,5 +37,3 @@ struct SportsEventDTO: Codable, Identifiable, Equatable, Hashable {
     }
     
 }
-
-

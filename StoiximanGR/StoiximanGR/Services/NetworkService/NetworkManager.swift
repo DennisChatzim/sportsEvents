@@ -35,7 +35,6 @@ class NetworkManager: NetworkManagerProtocol {
         urlconfig.timeoutIntervalForResource = 20
         let session = URLSession(configuration: urlconfig)
         
-        // Use `await` and handle errors by throwing them back to the caller
         let (data, response) = try await session.data(for: request)
         
         // Check the HTTP response status

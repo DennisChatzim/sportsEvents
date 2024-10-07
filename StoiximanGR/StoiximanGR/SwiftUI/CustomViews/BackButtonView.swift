@@ -15,9 +15,9 @@ struct BackButtonView: View {
         Button(action: backAction) {
             HStack {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color.blue)
                 Text("Back")
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color.blue)
                     .offset(x: -5)
             }
         }

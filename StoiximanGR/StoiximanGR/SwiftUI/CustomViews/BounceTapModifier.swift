@@ -21,7 +21,7 @@ struct BounceDragModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.all, 5)
+            .padding(.all, isPressed ? 5.0 : 0.0)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(isPressed ? theme.mainTextColour : Color.clear, lineWidth: 2)

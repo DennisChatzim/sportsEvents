@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Data Transfer Object
+// Data Transfer Object: Here we define the expecting object as it comes from server !
 struct SportsCategoryDTO: Codable, Hashable, Equatable {
 
     let i: String           // sport id -> Example: "FOOT"

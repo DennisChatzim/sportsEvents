@@ -66,12 +66,12 @@ struct CircularLoaderView: View {
                     )
             }
         }
-        .rotationEffect(Angle.degrees(rotationAngle)) // Rotate the entire set of dots
+        .rotationEffect(Angle.degrees(rotationAngle))
         .animation(shouldMoredots ? .none : .linear(duration: ballsStyle ? 2 * rotationSpeed: rotationSpeed).repeatForever(autoreverses: false), value: rotationAngle)
         .onAppear {
-            self.isAnimating.toggle() // = true
+            self.isAnimating.toggle()
             withAnimation {
-                self.rotationAngle = 360 // Full rotation for entire loader
+                self.rotationAngle = 360
             }
         }
     }

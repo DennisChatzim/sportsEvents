@@ -16,20 +16,17 @@ class DataManager: ObservableObject {
     
     func setNewCategories(newCategories: [SportsCategoryDTO]) {
         
-        var defaultPriorityIndex = 0
-        
         allCategories = newCategories.map { dtoCategory in
             
-            let allEventsFromDTOs = dtoCategory.e.map { eventTDO in
-            
-                defaultPriorityIndex += 1
+            // Enumerate over the eventDTOs to get both the index and the eventTDO
+            let allEventsFromDTOs = dtoCategory.e.enumerated().map { (index, eventTDO) in
                 
                 return SportsEvent(eventId: eventTDO.i,
                                    sportId: eventTDO.si,
                                    eventName: eventTDO.d,
-                                   eventDate: Date.init(timeIntervalSince1970: eventTDO.tt),
+                                   eventDate: Date(timeIntervalSince1970: eventTDO.tt),
                                    isFavourite: false,
-                                   defaultPriorityIndex: defaultPriorityIndex)
+                                   defaultPriorityIndex: index)
             }
             
             return SportsCategory(sportId: dtoCategory.i,
@@ -43,82 +40,84 @@ class DataManager: ObservableObject {
     
     func setThisEventFavourite(eventID: String, sportId: String) {
         
-        if let indexCategory = allCategories.firstIndex(where: { $0.sportId == sportId }) {
-            
-            if let indexEvent = allCategories[indexCategory].allEventsOfThisCategory.firstIndex(where: { $0.eventId == eventID }) {
-            
-                let category = allCategories[indexCategory]
-                let event = category.allEventsOfThisCategory[indexEvent]
-                event.isFavourite.toggle()
-                category.allEventsOfThisCategory[indexEvent] = event
-                
-                let newSortedEvents = updateSortingOfThisCategory(sportId: sportId)
-
-                allCategories[indexCategory].allEventsOfThisCategory = newSortedEvents
-                
-            }
+        guard let indexCategory = allCategories.firstIndex(where: { $0.sportId == sportId }) else {
+            debugPrint("Warning in setThisEventFavourite: Category not found: sportId = \(sportId)")
+            return
         }
-
+        
+        guard let indexEvent = allCategories[indexCategory].allEventsOfThisCategory.firstIndex(where: { $0.eventId == eventID }) else {
+            debugPrint("Warning in setThisEventFavourite: Event not found: eventID = \(eventID)")
+            return
+        }
+        
+        let category = allCategories[indexCategory]
+        let event = category.allEventsOfThisCategory[indexEvent]
+        event.isFavourite.toggle()
+        category.allEventsOfThisCategory[indexEvent] = event
+        
+        let newSortedEvents = updateSortingOfThisCategory(sportId: sportId)
+        
+        allCategories[indexCategory].allEventsOfThisCategory = newSortedEvents
+        
     }
-    
+
     func updateSortingOfThisCategory(sportId: String) -> [SportsEvent] {
         
-        if let indexCategory = allCategories.firstIndex(where: { $0.sportId == sportId }) {
-            
-            let category = allCategories[indexCategory]
-            
-            // Create the priority logic based on Favourite boolean:
-            var priorities = [String: Int]()
-            
-            for event in category.allEventsOfThisCategory {
+        guard let indexCategory = allCategories.firstIndex(where: { $0.sportId == sportId }) else {
+            debugPrint("Warning in updateSortingOfThisCategory: Category not found: sportId = \(sportId)")
+            return []
+        }
+        
+        let category = allCategories[indexCategory]
+        
+        // Create the priority logic based on Favourite boolean:
+        var priorities = [String: Int]()
                 
-                priorities[event.eventId] = event.isFavourite ? 1 : 0
-                
-            }
+        for event in category.allEventsOfThisCategory {
             
-            // Sort the events based on the priority of the Favourite
-            // and if same lets use the Date to show first the events that will start sooner !
-            let sortedEventsOfThisCategory = category
-                .allEventsOfThisCategory
-                .sorted(by: { event1, event2 in
+            priorities[event.eventId] = event.isFavourite ? 1 : 0
+            
+        }
+        
+        // Sort the events based on the priority of the Favourite
+        // and if same lets use the Date to show first the events that will start sooner !
+        let sortedEventsOfThisCategory = category
+            .allEventsOfThisCategory
+            .sorted(by: { event1, event2 in
+                
+                if priorities.keys.contains(event1.eventId),
+                   priorities.keys.contains(event2.eventId),
+                   let priority1 = priorities[event1.eventId],
+                   let priority2 = priorities[event2.eventId] {
                     
-                    if priorities.keys.contains(event1.eventId),
-                       priorities.keys.contains(event2.eventId),
-                       let priority1 = priorities[event1.eventId],
-                       let priority2 = priorities[event2.eventId] {
+                    if priority1 == priority2 {
                         
-                        if priority1 == priority2 {
-                            
-                            if event1.eventDate == event2.eventDate {
-                                
-                                return event1.defaultPriorityIndex < event2.defaultPriorityIndex
-                                
-                            } else {
-                                
-                                return event1.eventDate < event2.eventDate
-                                
-                            }
+                        if event1.eventDate == event2.eventDate { // Important details here: When two events have same date and also are both favourites lets keep the original server order of events !
+
+                            return event1.defaultPriorityIndex < event2.defaultPriorityIndex
                             
                         } else {
                             
-                            return priority1 > priority2
+                            return event1.eventDate < event2.eventDate // Lets order events by increasing date: Earlier dates will be shown first
                             
                         }
                         
                     } else {
                         
-                        return false
+                        return priority1 > priority2 // If the one event is favourite and the other one is not lets show the Favourite first according to requirements
                         
                     }
                     
-                })
-            
-            return sortedEventsOfThisCategory
-            
-        }
+                } else {
+                    
+                    return false
+                    
+                }
+                
+            })
         
-        return [SportsEvent]()
-    
+        return sortedEventsOfThisCategory
+        
     }
     
     func updateSortingOfAll() {
