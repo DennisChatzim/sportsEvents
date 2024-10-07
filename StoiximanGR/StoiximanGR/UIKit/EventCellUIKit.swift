@@ -88,10 +88,7 @@ class EventCell: UICollectionViewCell {
                    dataManager: DataManager?,
                    themeService: ThemeService?,
                    timerManager: TimerManager?) {
-        // I decided NOT to use global TimerManager for UIKit because that approach was designed for SwiftUI and Observable style. Performance is safer for UIKit if we use separate timer for each cell.
-        
-        disposeBag.dispose()
-        
+                
         self.event = event
         self.dataManager = dataManager
         self.timerManager = timerManager
@@ -102,6 +99,8 @@ class EventCell: UICollectionViewCell {
         
         titleLabel.text = event.eventName
         favoriteIcon.image = UIImage(systemName: event.isFavourite ? "star.fill" : "star")
+
+        disposeBag.dispose() // This is very important -> It will improve memory performance while reusing cells and also fix duplicated data issues !
 
         timerManager?.$currentDate
             .receive(on: DispatchQueue.main)

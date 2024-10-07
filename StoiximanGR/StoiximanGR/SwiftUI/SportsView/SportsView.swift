@@ -11,15 +11,12 @@ import SwiftUI
 struct SportsView: View {
     
     @Environment(\.router) var navRouter
-
     @ObservedObject var themeService: ThemeService // Keep ThemeService singleton in Views and DataManager to models
     @ObservedObject var timerManager: TimerManager
-
     @ObservedObject var model: SportsViewModel
     @State private var position: CGFloat = 0.0
-    
     var maxDraggingToRefreshHeight = min(200, UIScreen.main.bounds.height * 0.8)
-    
+
     var body: some View {
         
         ZStack {
@@ -38,18 +35,18 @@ struct SportsView: View {
                         handleNewScrollingPosition(newPosition: newPosition)
                         
                     }
-                    .preferredColorScheme(themeService.selectedTheme.colorScheme)
-                    .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
-                    .background(themeService.selectedTheme.mainBGColor)
-                    .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
                     .dragToRefresh(isLoading: $model.isLoading,
                                    position: $position)
                     // Refreshable is buggy in swiftUI because sometimes it stays spinning even after refresh is done.
                     // And this is why I decided to buld my own drag to refresh feature for you ! - > Look inside "CustomDragToRefreshView" and "dragToRefresh"
                     // .refreshable { Task { await model.loadData() } }
                     .loaderView(isLoading: $model.isLoading)
-                      
+                    .background(themeService.selectedTheme.mainBGColor)
+                    .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
+
                 }
+                .preferredColorScheme(themeService.selectedTheme.colorScheme)
+                .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
                 
             }
             
@@ -93,15 +90,16 @@ struct SportsView: View {
                             navRouter.navigate(to: .eventDetails(sportsEvent: sportsEvent, themeService: themeService))
                         })
                         .transition(.move(edge: .top).combined(with: .opacity))
-                        .animation(Animation.easeIn(duration: 0.3), value: model.isCategoryCollapsed(category: category))
+                        .animation(Animation.easeIn(duration: 0.4), value: model.isCategoryCollapsed(category: category))
 
                     }
                 }
 
             }
         }
-        .padding(.top, 5)
+        .padding(.top, 0)
         .padding(.bottom, 150)
+        
     }
     
     @ViewBuilder
@@ -115,7 +113,7 @@ struct SportsView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 22)
-                    .foregroundColor(themeService.getTintColor(sportId: category.sportId))
+                    .foregroundColor(themeService.selectedTheme.getTintColor(sportId: category.sportId))
                 
                 Text(category.categoryName + (model.isCategoryCollapsed(category: category) ? " (\(category.allEventsOfThisCategory.count) events)" : ""))
                     .font(.system(size: 15, weight: .bold))
@@ -139,8 +137,9 @@ struct SportsView: View {
             
         }
         .contentShape(Rectangle()) // Makes the whole area tappable
-        .background(themeService.selectedTheme.sectionsHeaderColor)
-        .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
+        .background(LinearGradient(gradient: Gradient(colors: [themeService.selectedTheme.sectionsHeaderColor, themeService.selectedTheme.mainBGColor]),
+                                   startPoint: .top, endPoint: .bottom))
+        .animation(.easeInOut(duration: 0.4), value: themeService.selectedTheme)
         .onTapGesture {
             debugPrint("Tapped category id = \(category.sportId)")
             withAnimation(Animation.linear(duration: 0.3)) {

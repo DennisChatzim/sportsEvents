@@ -60,11 +60,6 @@ struct LoaderView: View  {
 
                             )
                     )
-                    .bounceTap(withBorder: false,
-                               extraBounce: true,
-                               pressedBGColor: Color.clear,
-                               theme: theme,
-                               action: { })
                     .allowsHitTesting(ballsStyle)
                     .edgesIgnoringSafeArea(.all)
                     .onAppear{
@@ -101,6 +96,7 @@ struct LoaderViewModifier: ViewModifier {
         
         ZStack {
             content
+                .blur(radius: isLoading ? 3.0 : 0.0)
                 .allowsHitTesting(!isLoading)
                 .overlay(
                     ZStack {

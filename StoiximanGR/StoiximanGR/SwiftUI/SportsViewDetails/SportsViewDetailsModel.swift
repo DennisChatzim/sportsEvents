@@ -15,8 +15,6 @@ class SportsViewDetailsModel: ObservableObject {
 
     @Published var isFavourite = false // We need this because SwiftUI doesn't update correctly when accessing variables of a Published variable of an observer object
     
-    var disposeBag: DisposeBagForCombine = []
-
     init(sportsEvent: SportsEvent,
          dataManager: DataManager) {
 

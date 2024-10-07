@@ -24,7 +24,7 @@ class SportsViewDetailsModelTests: XCTestCase {
         sportsEvent = SportsEvent(eventId: "event1", sportId: "sport1", eventName: "Match 1", eventDate: Date(), isFavourite: false, defaultPriorityIndex: 0)
                 
         // Initialize the model with the mock sports event
-        model = SportsViewDetailsModel(sportsEvent: sportsEvent)
+        model = SportsViewDetailsModel(sportsEvent: sportsEvent, dataManager: dataManager)
     }
     
     override func tearDownWithError() throws {

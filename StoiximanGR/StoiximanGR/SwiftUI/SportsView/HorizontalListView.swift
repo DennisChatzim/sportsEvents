@@ -50,11 +50,11 @@ struct HorizontalListView: View {
                allEventsScrollView
                 
             }
-            .frame(height: 145)
+            .frame(height: 142)
             
         }
         .background(theme.mainBGColor)
-        .animation(.easeInOut(duration: 0.5), value: theme)
+        .animation(.easeInOut(duration: 0.3), value: theme)
 
     }
     
@@ -93,11 +93,15 @@ struct HorizontalListView: View {
                 .background(Color.clear)
                 .foregroundColor(sportsEvent.isFavourite ? theme.favouriteActiveColour : theme.favouriteInactiveColour)
                 .padding(.vertical, 2)
-                .onTapGesture {
+                .bounceTap(withBorder: true,
+                           extraBounce: true,
+                           pressedBGColor: Color.clear,
+                           theme: theme,
+                           action: {
                     model.updateFavourite(eventId: sportsEvent.eventId,
                                           sportId: sportsEvent.sportId)
-                }
-            
+                })
+                        
             Text(sportsEvent.eventName)
                 .font(Font.system(size: 13, weight: .regular))
                 .multilineTextAlignment(.center)
@@ -106,7 +110,7 @@ struct HorizontalListView: View {
             Spacer()
 
         }
-        .padding(.top, 12)
+        .padding(.top, 10)
         .frame(width: itemWidth)
         .bounceTap(withBorder: true,
                    extraBounce: false,

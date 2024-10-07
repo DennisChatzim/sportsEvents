@@ -14,45 +14,35 @@ class SportsViewModel: ObservableObject {
     @Published var isLoading = true // We start with true because we need to make sure that Loaders are shown imediately when application starts until we get the first data !
     @Published var errorMessage: String? = nil
     @Published var showAlert = false
-
     @Published var collapsedCategories: [SportsCategory] = []
-    var disposeBag: DisposeBagForCombine = []
     @Published var dataManager: DataManager
     @Published var networkManager: NetworkManagerProtocol
-
+    
     init(dataManager: DataManager,
          networkManager: NetworkManagerProtocol) {
         
         self.dataManager = dataManager
         self.networkManager = networkManager
-        reBindMainCategories()
-      
-    }
-    
-    func reBindMainCategories() {
         
-        disposeBag.dispose()
+        let newCategoriesArrived = self.dataManager.$allCategories
 
-        self.dataManager.$allCategories
+        newCategoriesArrived
             .dropFirst()
             .receive(on: DispatchQueue.main) // This will ensure that sink will occur on main thread !
-            .sink(receiveValue: { [weak self] newCategories in
-                self?.newCategoriesArrived(newCategories: newCategories)
-            })
-            .store(in: &disposeBag)
-    }
-    
-    func newCategoriesArrived(newCategories: [SportsCategory]) {
-                
-        allCategories = newCategories
-        isLoading = false // Lets make sure spinners are dismissed additionally here
+            .assign(to: &$allCategories)
+        
+        newCategoriesArrived
+            .map { _ in return false }
+            .receive(on: DispatchQueue.main) // This will ensure that sink will occur on main thread !
+            .assign(to: &$isLoading)
 
     }
-
+        
     func loadData() async {
         
         do {
             try await networkManager.fetchSportsEvents()
+            DispatchQueue.main.async {  self.isLoading = false } // Lets make sure spinners are dismissed additionally here
         } catch {
             DispatchQueue.main.async { // we need this in order to keep the http can in background thread and the result handling in Main thred -> Update UI
                 self.isLoading = false
@@ -62,7 +52,7 @@ class SportsViewModel: ObservableObject {
         }
         
     }
-        
+    
     func toggleCategoryVisibility(_ category: SportsCategory) {
         if let index = collapsedCategories.firstIndex(where: { $0.sportId == category.sportId }) {
             collapsedCategories.remove(at: index)

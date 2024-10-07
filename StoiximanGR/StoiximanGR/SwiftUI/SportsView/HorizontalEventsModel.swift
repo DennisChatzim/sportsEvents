@@ -11,8 +11,6 @@ class HorizontalEventsModel: ObservableObject {
     
     @Published var dataManager: DataManager
 
-    var disposeBag: DisposeBagForCombine = []
-
     @Published var events: [SportsEvent] = []
 
     init(sportId: String,

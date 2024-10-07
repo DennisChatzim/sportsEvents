@@ -26,9 +26,13 @@ struct SportsViewDetails: View {
                         .frame(width: 40)
                         .background(Color.clear)
                         .foregroundColor(model.isFavourite ? themeService.selectedTheme.favouriteActiveColour : themeService.selectedTheme.favouriteInactiveColour)
-                        .onTapGesture {
+                        .bounceTap(withBorder: true,
+                                   extraBounce: true,
+                                   pressedBGColor: Color.clear,
+                                   theme: themeService.selectedTheme,
+                                   action: {
                             model.updateFavourite()
-                        }
+                        })
                 }
                 .padding()
                 

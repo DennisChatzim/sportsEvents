@@ -7,10 +7,9 @@
 import Foundation
 import UIKit
 
-// MARK: - Horizontal Collection View Cell
 class HorizontalCollectionViewCell: UICollectionViewCell {
-    static let identifier = "HorizontalCollectionViewCell"
     
+    static let identifier = "HorizontalCollectionViewCell"
     var themeService: ThemeService?
     var dataManager: DataManager?
     var timerManager: TimerManager?

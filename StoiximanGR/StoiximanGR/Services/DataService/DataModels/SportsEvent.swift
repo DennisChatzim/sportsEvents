@@ -42,17 +42,23 @@ class SportsEvent: Codable, Identifiable, Equatable, Hashable, ObservableObject 
     }
     
     var eventDescription: String {
-        return eventName + "\nThis event will start on \(eventDateReadable)\n\(currentRemainingTime(currentDate: Date()))"
+        return eventName + "\nThis event will start on \(eventDateReadable)\n\(currentRemainingTime(currentDate: Date()))" // TODO: Use Localization
     }
     
     func currentRemainingTime(currentDate: Date) -> String {
-        return "\nRemaining time: \(self.timeRemainingInDaysHoursMinutesSeconds(currentDate: Date()))"
+        return "\nRemaining time: \(self.timeRemainingInDaysHoursMinutesSeconds(currentDate: Date()))" // TODO: Use Localization
     }
     
     var eventDateReadable: String {
         return eventDateFormatter.string(from: eventDate)
     }
    
+    // Ok so updating so many data Events = Views every second is not good idea
+    // The reason that I kept it 2 second accuracy is that on real devices I didn't notice any performance issues, on simulator it has some minor scrolling gaps
+    // I would suggest to change the format that requirements defined: "00:00:00" and keep the remaining time max accuracy to minutes instead of seconds !
+    // We could then set this variable to 30 seconds (realtimeSecondsToUpdateRemainingTime) to improve a lot the scrolling performance and
+    // Also we should change the format of remaining time to show always "DD:HH:MM" = Days-Hour-Minutes -> example: "1d:22h:46m"
+    // I did this already for the events that will start in more than 1 day -> format will be: "1d:22h:46m"
     func timeRemainingInDaysHoursMinutesSeconds(currentDate: Date) -> String {
         
         let timeInterval = eventDate.timeIntervalSince(currentDate) // Get the difference in seconds
@@ -72,13 +78,13 @@ class SportsEvent: Codable, Identifiable, Equatable, Hashable, ObservableObject 
             
             // If the total hours are 24 or more, include days in the output
             if totalHours >= 24 {
-                return "\(days)d:\(formattedHours):\(formattedMinutes):\(formattedSeconds)"
+                return "\(days)d:\(formattedHours)h:\(formattedMinutes)m"
             } else {
                 return "\(formattedHours):\(formattedMinutes):\(formattedSeconds)"
             }
             
         } else {
-            return "Date passed"
+            return "Date Passed" // Here we could show other text like "Event started or finished"
         }
     }
     
@@ -86,7 +92,7 @@ class SportsEvent: Codable, Identifiable, Equatable, Hashable, ObservableObject 
     private let eventDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
-        formatter.timeStyle = .full  //"HH:MM:SS"
+        formatter.timeStyle = .full
         return formatter
     }()
 

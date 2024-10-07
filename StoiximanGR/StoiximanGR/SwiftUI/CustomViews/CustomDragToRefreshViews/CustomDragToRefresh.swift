@@ -12,7 +12,7 @@ struct CustomDragToRefreshView: View {
     @Binding var isLoading: Bool
     @Binding var position: CGFloat
     @State var degressForRotationSpeed: Double = 0.0
-    var maxDraggingToRefreshHeight = min(200, UIScreen.main.bounds.height * 0.8)
+    var maxDraggingToRefreshHeight = min(250, UIScreen.main.bounds.height * 0.7)
     
     var body: some View {
         
@@ -26,7 +26,7 @@ struct CustomDragToRefreshView: View {
                     
                     getDragArrowIndicators()
                     
-                    Spacer().frame(width: 30)
+                    Spacer().frame(width: 20)
                     
                     LoaderViewForDragToRefresh(degrees: $degressForRotationSpeed)
                         .onChange(of: position) { newPosition, _ in
@@ -40,7 +40,7 @@ struct CustomDragToRefreshView: View {
                                      y: isLoading ? 1 : min(1, abs(position / maxDraggingToRefreshHeight)) + 0.2)
                         .animation(Animation.easeOut(duration: 0.7), value: position > 0 || isLoading) // Avoid animation when not needed, only when position > 0 or Loading we will need it
                     
-                    Spacer().frame(width: 30)
+                    Spacer().frame(width: 20)
                     
                     getDragArrowIndicators()
                     
@@ -48,10 +48,11 @@ struct CustomDragToRefreshView: View {
                     
                 }
                 .opacity(position > 10.0 ? 1.0 : 0.0)
-                .offset(y: max(0, abs(position / maxDraggingToRefreshHeight) * 10))
+                .offset(y: offsetYWhileDragging())
                 .animation(.easeInOut(duration: 0.3), value: position)
                 
                 Spacer()
+
             }
             .onAppear {
                 degressForRotationSpeed = position / maxDraggingToRefreshHeight * (4 * 360)
@@ -59,6 +60,13 @@ struct CustomDragToRefreshView: View {
             }
         }
         .allowsHitTesting(false)
+        
+    }
+    
+    func offsetYWhileDragging() -> CGFloat {
+        
+        let dynamic = ((position * 1.8 / (maxDraggingToRefreshHeight / 2.0)) * 20) - 5
+        return max(0, abs(dynamic))  // we need "max(0" to avoid setting any possible negative values
         
     }
 
@@ -73,7 +81,6 @@ struct CustomDragToRefreshView: View {
                    height: min(35, abs(position / maxDraggingToRefreshHeight * 30) + 10))
             .offset(x: 0, y: (position * 1.4 / maxDraggingToRefreshHeight) * 15 )
             .opacity(min(1, position > 10.0 ? abs(position * 1.4 / maxDraggingToRefreshHeight) : 0.0))
-            .padding(.top, 10)
 
     }
 

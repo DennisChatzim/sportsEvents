@@ -13,41 +13,11 @@ class ThemeService: ObservableObject, Codable, Equatable, Hashable {
     
     @Published var isDarkThemeActive = false
     @Published var selectedTheme: Theme = .dark
-    var disposeBag: DisposeBagForCombine = []
     
     init() {
         
         $selectedTheme.map { $0 == .dark ? true : false }.assign(to: &$isDarkThemeActive)
         
-    }
-    
-    // MARK: Make specific tint on the category icon based on the category
-    func getTintColor(sportId: String) -> Color {
-
-        switch sportId {
-        case "FOOT":
-            return selectedTheme.mainTextColour
-        case "BASK":
-            return Color.clear
-        case "TENN":
-            return Color.clear
-        case "VOLL":
-            return Color.clear
-        case "DART":
-            return selectedTheme.mainTextColour
-        case "TABL":
-            return Color.clear
-        case "ESPS":
-            return selectedTheme.mainTextColour
-        case "ICEH":
-            return selectedTheme.mainTextColour
-        case "SNOO":
-            return selectedTheme.mainTextColour
-        case "HAND":
-            return selectedTheme.mainTextColour
-        default:
-            return selectedTheme.mainTextColour
-        }
     }
     
     func hash(into hasher: inout Hasher) {
@@ -135,6 +105,35 @@ enum Theme: String, CaseIterable {
     
     var tabItemsNotSelectedTint: Color {
         return Color.gray
+    }
+    
+    // MARK: Make specific tint on the category icon based on the category
+    func getTintColor(sportId: String) -> Color {
+
+        switch sportId {
+        case "FOOT":
+            return self.mainTextColour
+        case "BASK":
+            return Color.clear
+        case "TENN":
+            return Color.clear
+        case "VOLL":
+            return Color.clear
+        case "DART":
+            return self.mainTextColour
+        case "TABL":
+            return Color.clear
+        case "ESPS":
+            return self.mainTextColour
+        case "ICEH":
+            return self.mainTextColour
+        case "SNOO":
+            return self.mainTextColour
+        case "HAND":
+            return self.mainTextColour
+        default:
+            return self.mainTextColour
+        }
     }
     
 }

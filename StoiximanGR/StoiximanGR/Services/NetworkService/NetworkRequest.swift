@@ -9,28 +9,12 @@ import Foundation
 import Network
 import Combine
 
-typealias DisposeBagForCombine = Set<AnyCancellable>
-extension DisposeBagForCombine {
-    mutating func dispose() {
-        forEach { $0.cancel() }
-        removeAll()
-    }
-}
-
 
 @globalActor
 actor NetworkRequest {
     
     static let shared = NetworkRequest()
-            
-    static var isReachable: Bool = true
-    
-    var disposeBag: DisposeBagForCombine = []
-
-    deinit {
-        disposeBag.dispose()
-    }
-    
+                
     func request<T: Decodable>(_ endpoint: APIEndpoint, body: Data? = nil) async throws -> T {
         
         guard let url = endpoint.url else {

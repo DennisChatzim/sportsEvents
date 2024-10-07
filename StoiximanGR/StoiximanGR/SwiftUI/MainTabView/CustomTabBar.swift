@@ -7,64 +7,10 @@
 
 import SwiftUI
 
-enum Tab : String, CaseIterable {
-    
-    case sportsSwiftUI, sportsUIKit
-    
-    func rawValueIndex() -> Int {
-        switch self {
-        case .sportsSwiftUI: return 1
-        case .sportsUIKit: return 0
-        }
-    }
-    
-    var nextTab: Tab {
-        switch self {
-        case .sportsSwiftUI: return .sportsSwiftUI
-        case .sportsUIKit: return .sportsUIKit
-        }
-    }
-    
-    var previousTab: Tab {
-        switch self {
-        case .sportsSwiftUI: return .sportsUIKit
-        case .sportsUIKit: return .sportsSwiftUI
-        }
-    }
-    
-    func imageNameSelected() -> String {
-        switch self {
-        case .sportsSwiftUI:
-            return "swiftUIIcon"
-        case .sportsUIKit:
-            return "uiKitIcon"
-        }
-    }
-    
-    func imageNameDeselected() -> String {
-        switch self {
-        case .sportsSwiftUI:
-            return "swiftUIIcon"
-        case .sportsUIKit:
-            return "uiKitIcon"
-        }
-    }
-    
-    func tabName() -> String {
-        switch self {
-        case .sportsSwiftUI:
-            return "SwiftUI"
-        case .sportsUIKit:
-            return "UIKit"
-        }
-    }
-    
-}
-
 struct CustomTabBar: View {
     
     @Binding var selectedTab: Tab
-    @State var theme: Theme
+    @ObservedObject var themeService: ThemeService
 
     @State var isAnimating = false
     @Namespace private var namespace
@@ -94,14 +40,13 @@ struct CustomTabBar: View {
         .padding(.bottom, 25)
         .background(
             ZStack {
-                theme.mainBGColor
-                    .animation(.easeInOut(duration: 0.5), value: true)
+                themeService.selectedTheme.mainBGColor
             }.edgesIgnoringSafeArea([.leading, .trailing, .bottom])
         )
         .overlay(
             VStack {
                 Rectangle()
-                    .fill(theme.mainBGColor)
+                    .fill(themeService.selectedTheme.mainBGColor)
                     .frame(height: 1)
                 Spacer()
             }
@@ -192,7 +137,7 @@ struct CustomTabBar: View {
             }
             .background(
                 ZStack {
-                    theme.mainBGColor
+                    themeService.selectedTheme.mainBGColor
                         .allowsHitTesting(false)
                         .opacity(selectedTab == tab && isAnimating ? 0.3 : 0.0)
                         .animation(selectedTab == tab ? .easeOut(duration: 0.1) : nil, value: selectedTab == tab)
@@ -219,5 +164,60 @@ struct CustomTabBar: View {
         .offset(y: -40)
     }
     
+}
+
+
+enum Tab : String, CaseIterable {
+    
+    case sportsSwiftUI, sportsUIKit
+    
+    func rawValueIndex() -> Int {
+        switch self {
+        case .sportsSwiftUI: return 1
+        case .sportsUIKit: return 0
+        }
+    }
+    
+    var nextTab: Tab {
+        switch self {
+        case .sportsSwiftUI: return .sportsSwiftUI
+        case .sportsUIKit: return .sportsUIKit
+        }
+    }
+    
+    var previousTab: Tab {
+        switch self {
+        case .sportsSwiftUI: return .sportsUIKit
+        case .sportsUIKit: return .sportsSwiftUI
+        }
+    }
+    
+    func imageNameSelected() -> String {
+        switch self {
+        case .sportsSwiftUI:
+            return "swiftUIIcon"
+        case .sportsUIKit:
+            return "uiKitIcon"
+        }
+    }
+    
+    func imageNameDeselected() -> String {
+        switch self {
+        case .sportsSwiftUI:
+            return "swiftUIIcon"
+        case .sportsUIKit:
+            return "uiKitIcon"
+        }
+    }
+    
+    func tabName() -> String {
+        switch self {
+        case .sportsSwiftUI:
+            return "SwiftUI"
+        case .sportsUIKit:
+            return "UIKit"
+        }
+    }
     
 }
+

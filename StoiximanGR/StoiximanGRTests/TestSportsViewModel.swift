@@ -88,7 +88,7 @@ final class SportsViewModelTests: XCTestCase {
     func testLoadData_withFailure() async {
         
         // Given
-        let mockNetworkManager =  MockNetworkManager(success: false, error: NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network Error"]))
+        let mockNetworkManager = MockNetworkManager(success: false, error: NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network Error"]))
 
         let categories = [SportsCategory(sportId: "1", categoryName: "Football", allEventsOfThisCategory: [])]
         mockDataManager.allCategories = categories
@@ -121,13 +121,13 @@ final class SportsViewModelTests: XCTestCase {
         viewModel.toggleCategoryVisibility(category)
         
         // Then
-        XCTAssertTrue(viewModel.isCollapsed(category: category))
+        XCTAssertTrue(viewModel.isCategoryCollapsed(category: category))
         
         // When - Toggle to expand
         viewModel.toggleCategoryVisibility(category)
         
         // Then
-        XCTAssertFalse(viewModel.isCollapsed(category: category))
+        XCTAssertFalse(viewModel.isCategoryCollapsed(category: category))
     }
     
     func testIsCollapsed() {
@@ -136,10 +136,10 @@ final class SportsViewModelTests: XCTestCase {
         let category = SportsCategory(sportId: "1", categoryName: "Football", allEventsOfThisCategory: [])
         
         // When the category is not collapsed
-        XCTAssertFalse(viewModel.isCollapsed(category: category))
+        XCTAssertFalse(viewModel.isCategoryCollapsed(category: category))
         
         // When the category is collapsed
         viewModel.collapsedCategories.append(category)
-        XCTAssertTrue(viewModel.isCollapsed(category: category))
+        XCTAssertTrue(viewModel.isCategoryCollapsed(category: category))
     }
 }

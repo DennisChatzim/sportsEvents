@@ -17,6 +17,7 @@ class CustomNavigationController: UINavigationController {
         super.viewDidLoad()
         
         // I did this here only for Demo purposes in order to keep UIKit implementation pure and not affected by the SwiftUI parts
+        // Normally I would do the same as for SportsView on the UIKitControllerWrapper.
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(themeService.selectedTheme.navigationBarBackground)

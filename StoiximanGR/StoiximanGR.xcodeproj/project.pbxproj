@@ -41,6 +41,9 @@
 		926A50792CB3B2BF005B16CE /* CustomDragToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */; };
 		926A507D2CB411A3005B16CE /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A507C2CB4119F005B16CE /* Config.swift */; };
 		926A507E2CB411A3005B16CE /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A507C2CB4119F005B16CE /* Config.swift */; };
+		926A50802CB42F1A005B16CE /* Helpers-Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A507F2CB42F10005B16CE /* Helpers-Utilities.swift */; };
+		926A50812CB42F1A005B16CE /* Helpers-Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A507F2CB42F10005B16CE /* Helpers-Utilities.swift */; };
+		926A50832CB42F5A005B16CE /* UIKitControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A50822CB42F4B005B16CE /* UIKitControllerWrapper.swift */; };
 		92CCF0042CB28A4300387DA2 /* ScrollviewWithOffsetDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF0032CB28A3800387DA2 /* ScrollviewWithOffsetDetection.swift */; };
 		92CCF0062CB29DFA00387DA2 /* SportsViewDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF0052CB29DEF00387DA2 /* SportsViewDetailsModel.swift */; };
 		92CCF0162CB2B0EB00387DA2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247FDE02CB10FE2006E37FE /* DataManager.swift */; };
@@ -122,8 +125,10 @@
 		92628A8E2CB1B5010022D1C6 /* BounceTapModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceTapModifier.swift; sourceTree = "<group>"; };
 		926A50762CB3B193005B16CE /* LoaderViewForDragToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderViewForDragToRefresh.swift; sourceTree = "<group>"; };
 		926A50782CB3B2B7005B16CE /* CustomDragToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDragToRefresh.swift; sourceTree = "<group>"; };
-		926A507B2CB4116F005B16CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		926A507B2CB4116F005B16CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		926A507C2CB4119F005B16CE /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		926A507F2CB42F10005B16CE /* Helpers-Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helpers-Utilities.swift"; sourceTree = "<group>"; };
+		926A50822CB42F4B005B16CE /* UIKitControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitControllerWrapper.swift; sourceTree = "<group>"; };
 		92B385562CB10B3200B8AE69 /* StoiximanGR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoiximanGR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B385672CB10B3400B8AE69 /* StoiximanGRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoiximanGRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B385712CB10B3400B8AE69 /* StoiximanGRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoiximanGRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -232,6 +237,7 @@
 				92628A802CB131F20022D1C6 /* ThemeService.swift */,
 				9247FDE12CB10FE2006E37FE /* DataService */,
 				9247FDEB2CB10FE2006E37FE /* NetworkService */,
+				926A507F2CB42F10005B16CE /* Helpers-Utilities.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -241,6 +247,7 @@
 			children = (
 				9247FDED2CB10FE2006E37FE /* MainTabView.swift */,
 				92628A852CB1748F0022D1C6 /* CustomTabBar.swift */,
+				926A50822CB42F4B005B16CE /* UIKitControllerWrapper.swift */,
 			);
 			path = MainTabView;
 			sourceTree = "<group>";
@@ -301,13 +308,13 @@
 		9247FDFF2CB10FE2006E37FE /* StoiximanGR */ = {
 			isa = PBXGroup;
 			children = (
-				926A507B2CB4116F005B16CE /* Info.plist */,
 				9247FDFE2CB10FE2006E37FE /* StoiximanGRApp.swift */,
 				9247FDFA2CB10FE2006E37FE /* UIKit */,
 				9247FDF82CB10FE2006E37FE /* SwiftUI */,
 				9247FDEC2CB10FE2006E37FE /* Services */,
 				924996D32CB1181E00B12592 /* StringsLocalization */,
 				9247FDFB2CB10FE2006E37FE /* Assets.xcassets */,
+				926A507B2CB4116F005B16CE /* Info.plist */,
 				9247FDFD2CB10FE2006E37FE /* StoiximanGR.entitlements */,
 				92628A7E2CB12B0F0022D1C6 /* LaunchScreen.storyboard */,
 			);
@@ -567,6 +574,7 @@
 				92628A882CB19E300022D1C6 /* CustomNavigationController.swift in Sources */,
 				926A507E2CB411A3005B16CE /* Config.swift in Sources */,
 				92628A842CB158FD0022D1C6 /* BackButtonView.swift in Sources */,
+				926A50832CB42F5A005B16CE /* UIKitControllerWrapper.swift in Sources */,
 				92CCF0752CB2BDE700387DA2 /* EventCellUIKit.swift in Sources */,
 				92CCF0062CB29DFA00387DA2 /* SportsViewDetailsModel.swift in Sources */,
 				92CCF07B2CB2CD0B00387DA2 /* TimerManager.swift in Sources */,
@@ -574,6 +582,7 @@
 				9247FE0F2CB10FE2006E37FE /* HorizontalListView.swift in Sources */,
 				92CCF0792CB2CC9900387DA2 /* HorizontalEventsModel.swift in Sources */,
 				926A50772CB3B193005B16CE /* LoaderViewForDragToRefresh.swift in Sources */,
+				926A50812CB42F1A005B16CE /* Helpers-Utilities.swift in Sources */,
 				9247FE102CB10FE2006E37FE /* SportsView.swift in Sources */,
 				9247FE112CB10FE2006E37FE /* SportsViewModel.swift in Sources */,
 				9247FE122CB10FE2006E37FE /* SportsViewDetails.swift in Sources */,
@@ -593,6 +602,7 @@
 				92CCF0182CB2B11300387DA2 /* SportsCategory.swift in Sources */,
 				92CCF01B2CB2B13E00387DA2 /* ThemeService.swift in Sources */,
 				926A507D2CB411A3005B16CE /* Config.swift in Sources */,
+				926A50802CB42F1A005B16CE /* Helpers-Utilities.swift in Sources */,
 				92CCF0172CB2B10200387DA2 /* SportsEvent.swift in Sources */,
 				92CCF0162CB2B0EB00387DA2 /* DataManager.swift in Sources */,
 				92CCF01F2CB2B18000387DA2 /* NetworkError.swift in Sources */,
@@ -792,7 +802,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
@@ -805,6 +815,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				WARNING_CFLAGS = "-Wunused-function";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
@@ -835,7 +846,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
@@ -848,6 +859,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				WARNING_CFLAGS = "-Wunused-function";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;

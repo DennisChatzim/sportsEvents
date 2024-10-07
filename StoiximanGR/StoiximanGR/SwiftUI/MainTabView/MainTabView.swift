@@ -21,7 +21,8 @@ struct MainTabView: View {
     // 2.. SwiftUI will by default will recreate the SportsViewModel of the SportsView inside this class if we just pass it as a new
     // instance like this: SportsView(themeService: themeService, model: SportsViewModel(dataManager: DataManager.shared, networkManager: NetworkManager.shared))
     // This is why we keep it as @StateObject and create SportsView like this: SportsView(themeService: themeService, model: sportsModel)
-    @StateObject var sportsModel = SportsViewModel(dataManager: DataManager.shared, networkManager: NetworkManager.shared)
+    @StateObject var sportsModel = SportsViewModel(dataManager: DataManager.shared,
+                                                   networkManager: NetworkManager.shared)
     
     @State var tabViewSelection = 0
     @State private var selectedTab: Tab = .sportsUIKit
@@ -31,7 +32,9 @@ struct MainTabView: View {
         ZStack {
                         
             ZStack {
-                                
+                
+                themeService.selectedTheme.mainBGColor.edgesIgnoringSafeArea(.all)
+                
                 uiKitWrapperController
                 
                 swiftUINavigationView
@@ -50,15 +53,7 @@ struct MainTabView: View {
         }
         
     }
-    
-    var sportsViewUIKit: some View {
-        
-        CustomNavigationControllerWrapper()
-            .preferredColorScheme(themeService.selectedTheme.colorScheme)
-            .animation(.easeInOut(duration: 0.5), value: themeService.selectedTheme)
 
-    }
-    
     var uiKitWrapperController: some View {
 
         ZStack {
@@ -70,13 +65,21 @@ struct MainTabView: View {
         .offset(x: selectedTab == .sportsUIKit ? 0.0 : -1.0 * UIScreen.main.bounds.width)
     }
     
+    var sportsViewUIKit: some View {
+        
+        UIKitControllerWrapper()
+
+    }
+    
     var swiftUINavigationView: some View {
         
         return ZStack {
             
             NavigationStack(path: $navRouter.navPath) {
-                
-                sportsViewSwiftUI
+            
+                SportsView(themeService: themeService,
+                           timerManager: timerManager,
+                           model: sportsModel)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar { toolbarItems(tintColour: themeService.selectedTheme.customNavigationBarItemTint) }
@@ -106,16 +109,10 @@ struct MainTabView: View {
 
     }
     
-    var sportsViewSwiftUI: some View {
-        SportsView(themeService: themeService,
-                   timerManager: timerManager,
-                   model: sportsModel)
-    }
-    
-    var customTabBar: CustomTabBar {
+    var customTabBar: some View {
         
         return CustomTabBar(selectedTab: $selectedTab,
-                            theme: themeService.selectedTheme) { newTab in
+                            themeService: themeService) { newTab in
             
             guard newTab == selectedTab else { return }
             
@@ -192,16 +189,4 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView()
-}
-
-// Wrapper to Present UIKit in SwiftUI
-struct CustomNavigationControllerWrapper: UIViewControllerRepresentable {
-    
-    var myUIKitNavigationController = CustomNavigationController.init(rootViewController: EventsUIViewController())
-    
-    func makeUIViewController(context: Context) -> CustomNavigationController {
-        return myUIKitNavigationController
-    }
-    
-    func updateUIViewController(_ uiViewController: CustomNavigationController, context: Context) {}
 }

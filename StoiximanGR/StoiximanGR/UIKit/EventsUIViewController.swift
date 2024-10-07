@@ -133,12 +133,13 @@ class EventsUIViewController: UIViewController {
         collectionView.register(HorizontalCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalCollectionViewCell.identifier)
         collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryHeader.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
+        // collectionView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 200, right: 0)
+        collectionView.contentInsetAdjustmentBehavior = .automatic // This ensures automatic adjustment for safe areas
+            
         view.addSubview(collectionView)
        
         NSLayoutConstraint.activate([
-                        
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: paddingTop + 50),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: paddingTop),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -201,13 +202,13 @@ class EventsUIViewController: UIViewController {
     
     func showSpinner() {
         
-        UIView.animate(withDuration: 0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.mySpinnerView.layer.opacity = 1.0
         }) { (succeed) -> Void in }
     }
     
     func hideSpinner() {
-        UIView.animate(withDuration: 0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.mySpinnerView.layer.opacity = 0.0
         }) { (succeed) -> Void in }
     }
@@ -286,7 +287,7 @@ extension EventsUIViewController: UICollectionViewDataSource, UICollectionViewDe
                              isVisible: categoryVisibility.isEmpty ? true : categoryVisibility[indexPath.section],
                              sportId: model.allCategories[indexPath.section].sportId,
                              numberOfEvents: model.allCategories[indexPath.section].allEventsOfThisCategory.count,
-                             themeService: themeService)
+                             theme: themeService.selectedTheme)
             
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapHeader(_:)))
             header.addGestureRecognizer(tapGesture)
@@ -314,6 +315,15 @@ extension EventsUIViewController: UICollectionViewDataSource, UICollectionViewDe
             collectionView.reloadSections(IndexSet(integer: section))
         }, completion: nil)
         
+    }
+    
+    // We need this because when the CollectionView is scrolled full upwards and the bottom is visible we want to add more padding and vertical space for the user to scroll, it feels better ;)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Set custom bottom inset while keeping automatic top inset adjustment
+        let additionalBottomInset: CGFloat = 150
+        collectionView.contentInset.bottom = additionalBottomInset
     }
 }
 

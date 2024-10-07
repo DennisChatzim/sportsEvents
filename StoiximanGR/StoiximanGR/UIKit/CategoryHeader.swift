@@ -10,11 +10,11 @@ import UIKit
 class CategoryHeader: UICollectionReusableView {
     
     static let identifier = "CategoryHeader"
-    
     private let categoryImageView = UIImageView()
     private let titleLabel = UILabel()
     private let arrowImageView = UIImageView()
-    
+    private let gradient = CAGradientLayer()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -31,6 +31,14 @@ class CategoryHeader: UICollectionReusableView {
         arrowImageView.image = UIImage(named: "chevron.down")
         categoryImageView.contentMode = .scaleAspectFit
         addSubview(arrowImageView)
+        
+        let startPoint : CGPoint = CGPoint(x: 0.5, y: 0.0)
+        let endPoint : CGPoint = CGPoint(x: 0.5, y: 1.0)
+        gradient.locations = [0.0 , 1.0]
+        gradient.startPoint = startPoint
+        gradient.endPoint = endPoint
+        gradient.frame = self.bounds
+        self.layer.insertSublayer(gradient, at: 0)
 
         NSLayoutConstraint.activate([
          
@@ -49,6 +57,7 @@ class CategoryHeader: UICollectionReusableView {
             arrowImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
         
+        
     }
     
     required init?(coder: NSCoder) {
@@ -59,9 +68,9 @@ class CategoryHeader: UICollectionReusableView {
                    isVisible: Bool,
                    sportId: String,
                    numberOfEvents: Int,
-                   themeService: ThemeService) {
-        
-        self.backgroundColor = UIColor(themeService.selectedTheme.sectionsHeaderColor)
+                   theme: Theme) {
+
+        self.backgroundColor = UIColor(theme.sectionsHeaderColor)
         
         if isVisible {
             titleLabel.text = title
@@ -70,14 +79,13 @@ class CategoryHeader: UICollectionReusableView {
         }
         
         categoryImageView.image = UIImage(named: SportsCategory.getIconNameFor(sportId: sportId))
-        categoryImageView.tintColor = UIColor(themeService.getTintColor(sportId: sportId))
-
-        titleLabel.textColor = UIColor(themeService.selectedTheme.mainTextColour)
-
+        categoryImageView.tintColor = UIColor(theme.getTintColor(sportId: sportId))
+        titleLabel.textColor = UIColor(theme.mainTextColour)
         arrowImageView.image = UIImage(systemName: isVisible ? "chevron.up" : "chevron.down" )
-        arrowImageView.tintColor = UIColor(themeService.selectedTheme.mainTextColour)
+        arrowImageView.tintColor = UIColor(theme.mainTextColour)
+        gradient.colors = [UIColor(theme.sectionsHeaderColor).cgColor, UIColor(theme.mainBGColor).cgColor]
 
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+        UIView.animate(withDuration: 0.4, animations: { () -> Void in
             self.arrowImageView.transform = CGAffineTransformMakeRotation(isVisible ? 0.0 : CGFloat(180 * Double.pi))
             self.arrowImageView.layoutSubviews()
         }) { (succeed) -> Void in }

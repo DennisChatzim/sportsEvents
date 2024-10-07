@@ -21,7 +21,6 @@ struct BounceDragModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.all, isPressed ? 5.0 : 0.0)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(isPressed ? theme.mainTextColour : Color.clear, lineWidth: 2)
@@ -62,28 +61,4 @@ extension View {
                                          action: action))
     }
     
-    var anyView: AnyView {
-        AnyView(self)
-    }
-    
-    func onLoad(perform action: (() -> Void)? = nil) -> some View {
-        var actionPerformed = false
-        return self.onAppear {
-            guard !actionPerformed else {
-                return
-            }
-            actionPerformed = true
-            action?()
-        }
-    }
-    
-    func fullBackground(imageName: String) -> some View {
-        return background(
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-        )
-        .edgesIgnoringSafeArea(.all)
-    }
 }
