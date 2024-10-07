@@ -23,13 +23,5 @@ class HorizontalEventsModel: ObservableObject {
             .assign(to: &$events)
                         
     }
-    
-    func updateFavourite(eventId: String,
-                         sportId: String) {
-        
-        dataManager.setThisEventFavourite(eventID: eventId,
-                                          sportId: sportId)
-        
-    }
-        
+            
 }
