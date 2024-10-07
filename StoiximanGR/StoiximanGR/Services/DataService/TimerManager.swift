@@ -24,32 +24,61 @@ class TimerManager: ObservableObject {
     // We could then set this variable to 30 seconds (realtimeSecondsToUpdateRemainingTime) to improve a lot the scrolling performance and
     // Also we should change the format of remaining time to show always "DD:HH:MM" = Days-Hour-Minutes -> example: "1d:22h:46m"
     // I did this already for the events that will start in more than 1 day -> format will be: "1d:22h:46m"
-    var realtimeSecondsToUpdateRemainingTime: TimeInterval = 1.0
+    var realtimeSecondsToUpdateRemainingTime: TimeInterval {
+           return 1.0
+    }
+    
+    private var timer: Cancellable?
     
     @Published var isUIKitTimerEnabled = true
 
     init() {
         
+        setupTimerObserver()
+//
+//        $isUIKitTimerEnabled
+//            .receive(on: DispatchQueue.main)
+//            .sink(receiveValue: { [weak self] isUIKitTimerEnabled in
+//                guard let instance = self else { return }
+//              
+//                instance.timer?.invalidate()
+//                instance.timer? = nil
+//                
+//                timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect()
+//
+//                if isUIKitTimerEnabled {
+//                    
+//                    instance.timer.assign(to: &instance.$currentDateUIKit)
+//
+//                } else {
+//                    
+//                    instance.timer.assign(to: &instance.$currentDateSwiftUI)
+//
+//                }
+//                
+//            })
+//            .store(in: &disposeBag)
+        
+    }
+    
+    private func setupTimerObserver() {
+        
         $isUIKitTimerEnabled
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] isUIKitTimerEnabled in
                 guard let instance = self else { return }
-              
-                let timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect()
+                
+                // Stop and invalidate the existing timer before starting a new one
+                instance.timer?.cancel()
+                instance.timer = nil
                 
                 if isUIKitTimerEnabled {
-                    
-                    timer.assign(to: &instance.$currentDateUIKit)
-
+                    instance.timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect().assign(to: \.currentDateUIKit, on: instance)
                 } else {
-                    
-                    timer.assign(to: &instance.$currentDateSwiftUI)
-
+                    instance.timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect().assign(to: \.currentDateSwiftUI, on: instance)
                 }
-                
             })
             .store(in: &disposeBag)
-        
     }
 
     func enableOnlyUIKitTimer(onlyUIKit: Bool) {

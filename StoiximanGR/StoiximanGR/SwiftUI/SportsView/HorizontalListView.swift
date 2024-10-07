@@ -20,7 +20,9 @@ struct HorizontalListView: View {
     
     @ObservedObject var model: HorizontalEventsModel
     @State var theme: Theme
-    @ObservedObject var timerManager: TimerManager // Lets keep TimerManager in SwiftUI class instead of the model because it afffects the UI directly by its observer property currentDate
+    
+    // Lets keep TimerManager in SwiftUI class instead of the model because it afffects the UI directly by its observer property currentDate
+    @ObservedObject var timerManager: TimerManager
 
     init(sportId: String,
          dataManager: DataManager,
