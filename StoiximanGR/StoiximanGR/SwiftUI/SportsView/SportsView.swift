@@ -12,7 +12,7 @@ struct SportsView: View {
     
     @Environment(\.router) var navRouter
     @ObservedObject var themeService: ThemeService // Keep ThemeService singleton in Views and DataManager to models
-    @State var timerManager: TimerManager
+    @State var timerManager: TimerManager // We want to keep this @State instead of ObservedObject to avoid RE-rendering the View when any of the TimerManager @Published properties is changed. That way we avoid rerendering this view when only the Horizontal sub view -> Events view is needed to be updated
     @ObservedObject var model: SportsViewModel
     @State private var position: CGFloat = 0.0
     var maxDraggingToRefreshHeight = min(200, UIScreen.main.bounds.height * 0.8)
