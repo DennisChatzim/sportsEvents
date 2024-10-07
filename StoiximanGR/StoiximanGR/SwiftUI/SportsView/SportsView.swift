@@ -90,7 +90,7 @@ struct SportsView: View {
                             navRouter.navigate(to: .eventDetails(sportsEvent: sportsEvent, themeService: themeService))
                         })
                         .transition(.move(edge: .top).combined(with: .opacity))
-                        .animation(Animation.easeIn(duration: 0.2), value: model.isCategoryCollapsed(category: category))
+                        .animation(Animation.easeIn(duration: 0.4), value: model.isCategoryCollapsed(category: category))
 
                     }
                 }

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92415E4D2CB45E800024ED90 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92415E4C2CB45E800024ED90 /* EventView.swift */; };
 		9247FE002CB10FE2006E37FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDDB2CB10FE2006E37FE /* Preview Assets.xcassets */; };
 		9247FE012CB10FE2006E37FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9247FDFB2CB10FE2006E37FE /* Assets.xcassets */; };
 		9247FE022CB10FE2006E37FE /* SportsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247FDDD2CB10FE2006E37FE /* SportsCategory.swift */; };
@@ -93,7 +92,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		92415E4C2CB45E800024ED90 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		9247FDDB2CB10FE2006E37FE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9247FDDD2CB10FE2006E37FE /* SportsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsCategory.swift; sourceTree = "<group>"; };
 		9247FDDE2CB10FE2006E37FE /* SportsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsEvent.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				9247FDF42CB10FE2006E37FE /* SportsViewModel.swift */,
 				9247FDF22CB10FE2006E37FE /* HorizontalListView.swift */,
 				92CCF0782CB2CC9800387DA2 /* HorizontalEventsModel.swift */,
-				92415E4C2CB45E800024ED90 /* EventView.swift */,
 			);
 			path = SportsView;
 			sourceTree = "<group>";
@@ -568,7 +565,6 @@
 				9247FE072CB10FE2006E37FE /* EndPoints.swift in Sources */,
 				9247FE082CB10FE2006E37FE /* NetworkError.swift in Sources */,
 				9247FE092CB10FE2006E37FE /* NetworkManager.swift in Sources */,
-				92415E4D2CB45E800024ED90 /* EventView.swift in Sources */,
 				92628A8F2CB1B5050022D1C6 /* BounceTapModifier.swift in Sources */,
 				926A50792CB3B2BF005B16CE /* CustomDragToRefresh.swift in Sources */,
 				9247FE0A2CB10FE2006E37FE /* NetworkRequest.swift in Sources */,
