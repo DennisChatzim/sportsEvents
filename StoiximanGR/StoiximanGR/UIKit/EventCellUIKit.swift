@@ -102,7 +102,7 @@ class EventCell: UICollectionViewCell {
 
         disposeBag.dispose() // This is very important -> It will improve memory performance while reusing cells and also fix duplicated data issues !
 
-        timerManager?.$currentDate
+        timerManager?.$currentDateUIKit
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] newDate in
                 guard let instance = self else { return }

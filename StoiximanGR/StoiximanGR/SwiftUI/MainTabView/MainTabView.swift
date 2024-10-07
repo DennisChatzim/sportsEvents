@@ -114,6 +114,8 @@ struct MainTabView: View {
         return CustomTabBar(selectedTab: $selectedTab,
                             themeService: themeService) { newTab in
             
+            TimerManager.shared.enableOnlyUIKitTimer(onlyUIKit: newTab == Tab.sportsUIKit)
+
             guard newTab == selectedTab else { return }
             
             // If user is inside Event details view and tab the tab item we should navigation back !

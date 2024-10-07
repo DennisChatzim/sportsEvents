@@ -76,7 +76,7 @@ struct HorizontalListView: View {
         
         VStack(alignment: .center) {
             
-            Text(sportsEvent.timeRemainingInDaysHoursMinutesSeconds(currentDate: timerManager.currentDate))
+            Text(sportsEvent.timeRemainingInDaysHoursMinutesSeconds(currentDate: timerManager.currentDateSwiftUI))
                 .font(Font.system(size: 14, weight: .regular))
                 .lineLimit(1)
                 .frame(width: itemWidth * 0.8) // We need to set explicitly the width to have consistent UI between all event cells-views
