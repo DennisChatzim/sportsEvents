@@ -35,29 +35,6 @@ class TimerManager: ObservableObject {
     init() {
         
         setupTimerObserver()
-//
-//        $isUIKitTimerEnabled
-//            .receive(on: DispatchQueue.main)
-//            .sink(receiveValue: { [weak self] isUIKitTimerEnabled in
-//                guard let instance = self else { return }
-//              
-//                instance.timer?.invalidate()
-//                instance.timer? = nil
-//                
-//                timer = Timer.publish(every: instance.realtimeSecondsToUpdateRemainingTime, on: .main, in: .common).autoconnect()
-//
-//                if isUIKitTimerEnabled {
-//                    
-//                    instance.timer.assign(to: &instance.$currentDateUIKit)
-//
-//                } else {
-//                    
-//                    instance.timer.assign(to: &instance.$currentDateSwiftUI)
-//
-//                }
-//                
-//            })
-//            .store(in: &disposeBag)
         
     }
     
@@ -68,7 +45,6 @@ class TimerManager: ObservableObject {
             .sink(receiveValue: { [weak self] isUIKitTimerEnabled in
                 guard let instance = self else { return }
                 
-                // Stop and invalidate the existing timer before starting a new one
                 instance.timer?.cancel()
                 instance.timer = nil
                 
