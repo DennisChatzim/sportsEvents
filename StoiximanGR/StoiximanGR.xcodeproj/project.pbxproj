@@ -223,8 +223,8 @@
 			isa = PBXGroup;
 			children = (
 				9247FDE82CB10FE2006E37FE /* NetworkManager.swift */,
-				926A507C2CB4119F005B16CE /* Config.swift */,
 				9247FDE92CB10FE2006E37FE /* NetworkRequest.swift */,
+				926A507C2CB4119F005B16CE /* Config.swift */,
 				9247FDE42CB10FE2006E37FE /* NetworkDataModels */,
 				9247FDE72CB10FE2006E37FE /* NetworkEnums */,
 			);

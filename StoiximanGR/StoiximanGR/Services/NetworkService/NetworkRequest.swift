@@ -17,6 +17,7 @@ actor NetworkRequest {
                 
     func request<T: Decodable>(_ endpoint: APIEndpoint, body: Data? = nil) async throws -> T {
         
+        // Ensure the URL is valid
         guard let url = endpoint.url else {
             throw NetworkError.badURL
         }
@@ -24,10 +25,17 @@ actor NetworkRequest {
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = body
+        request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
         
-        let (data, response) = try await URLSession.shared.data(for: request)
+        // Create a URLSession with custom timeout
+        let urlconfig = URLSessionConfiguration.default
+        urlconfig.timeoutIntervalForRequest = 15
+        urlconfig.timeoutIntervalForResource = 20
+        let session = URLSession(configuration: urlconfig)
         
+        let (data, response) = try await session.data(for: request)
+        
+        // Check the HTTP response status
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.invalidResponse
         }
@@ -35,7 +43,7 @@ actor NetworkRequest {
         guard (200...299).contains(httpResponse.statusCode) else {
             throw NetworkError.serverError(statusCode: httpResponse.statusCode)
         }
-        
+                
         do {
             let decodedResponse = try JSONDecoder().decode(T.self, from: data)
             return decodedResponse
@@ -55,6 +63,7 @@ actor NetworkRequest {
             print("I know not this error")
             throw NetworkError.decodingError
         }
+             
     }
     
 }
